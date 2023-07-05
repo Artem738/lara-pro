@@ -24,7 +24,7 @@ class MyUserCommand extends Command
 
         if ($userData->getAge() < 18) {
             if (!$this->confirm('Ви неповнолітній. Продовжити виконання команди?')) {
-                $this->info('Ви скасували виконання команди.');
+                $this->alert('Ви скасували виконання команди.');
                 return;
             }
         }
@@ -83,9 +83,7 @@ class MyUserCommand extends Command
     protected function getUserFilePath(string $name): string
     {
         $directory = storage_path($this->userDirectoryPath);
-        if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0755, true);
-        }
+        File::ensureDirectoryExists($directory);
         return $directory . '/' . $name . '.txt';
     }
 }

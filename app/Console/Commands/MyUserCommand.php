@@ -5,89 +5,19 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-use JsonSerializable;
-
-class ArtUserData implements JsonSerializable
-{
-    protected string $name;
-    protected int $age;
-    protected string $gender;
-    protected string $city;
-    protected string $phone;
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getAge(): int
-    {
-        return $this->age;
-    }
-
-    public function setAge(int $age): void
-    {
-        $this->age = $age;
-    }
-
-    public function getGender(): string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(string $gender): void
-    {
-        $this->gender = $gender;
-    }
-
-    public function getCity(): string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): void
-    {
-        $this->city = $city;
-    }
-
-    public function getPhone(): string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): void
-    {
-        $this->phone = $phone;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'name' => $this->getName(),
-            'age' => $this->getAge(),
-            'gender' => $this->getGender(),
-            'city' => $this->getCity(),
-            'phone' => $this->getPhone(),
-        ];
-    }
-}
-
 
 class MyUserCommand extends Command
 {
     protected $signature = 'myuser {name}';
     protected $description = 'My user Learning Command';
 
+    private string $userDirectoryPath = 'app/users';
+
     public function handle(): void
     {
         $name = $this->argument('name');
 
-        $userData = new ArtUserData();
+        $userData = new MyUserData();
 
         $userData->setName($name);
         $userData->setAge($this->ask('Введіть ваш вік:'));
@@ -102,51 +32,44 @@ class MyUserCommand extends Command
         $this->processUserChoice($userData);
     }
 
-    protected function processUserChoice(ArtUserData $userData): void
+    protected function processUserChoice(MyUserData $userData): void
     {
         $option = $this->choice('Виберіть, що робити:', ['Read', 'Write']);
 
         if ($option === 'Read') {
-            $this->readFile($userData);
+            $this->readUserDataFromFile($userData);
         } elseif ($option === 'Write') {
-            $this->writeFile($userData);
+            $this->getUserAdditionalData($userData);
+            $this->saveUserDataToFile($userData);
         } else {
             $this->error('Некоректний вибір.');
         }
     }
 
-    protected function readFile(ArtUserData $userData): void
-    {
-        $userFilePath = $this->getUserFilePath($userData->getName());
-        if (File::exists($userFilePath)) {
-            $contents = File::get($userFilePath);
-            $this->line($contents);
-        } else {
-            $this->error('Файл не існує.');
-        }
-    }
-
-    protected function writeFile(ArtUserData $userData): void
-    {
-        $this->getUserDataFromUser($userData);
-        $json = $this->convertUserDataToJson($userData);
-        $this->saveUserDataToFile($userData, $json);
-    }
-
-    protected function getUserDataFromUser(ArtUserData $userData): void
+    protected function getUserAdditionalData(MyUserData $userData): void
     {
         $userData->setGender($this->ask('Введіть вашу стать:'));
         $userData->setCity($this->ask('Введіть ваше місто:'));
         $userData->setPhone($this->ask('Введіть ваш телефон:'));
     }
 
-    protected function convertUserDataToJson(ArtUserData $userData): string
+    protected function readUserDataFromFile(MyUserData $userData): void
     {
-        return json_encode($userData);
+        $userFilePath = $this->getUserFilePath($userData->getName());
+        if (File::exists($userFilePath)) {
+            $contents = File::get($userFilePath);
+            $data = json_decode($contents, true);
+            $userData->fillFromArray($data);
+            $this->info($userData->getUserDataString());
+        } else {
+            $this->error('Файл не існує.');
+        }
     }
 
-    protected function saveUserDataToFile(ArtUserData $userData, string $json): void
+
+    protected function saveUserDataToFile(MyUserData $userData): void
     {
+        $json = json_encode($userData);
         $userFilePath = $this->getUserFilePath($userData->getName());
         $result = File::put($userFilePath, $json);
 
@@ -159,7 +82,7 @@ class MyUserCommand extends Command
 
     protected function getUserFilePath(string $name): string
     {
-        $directory = storage_path('app/users');
+        $directory = storage_path($this->userDirectoryPath);
         if (!File::exists($directory)) {
             File::makeDirectory($directory, 0755, true);
         }

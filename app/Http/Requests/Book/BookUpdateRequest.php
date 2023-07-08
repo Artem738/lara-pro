@@ -19,9 +19,9 @@ class BookUpdateRequest extends FormRequest
         $id = $this->route('id');
 
         $idValidator = Validator::make(
-            ['id' => $id], ['id' => 'required|integer'],
+            ['id' => $id], ['id' => 'required|integer'],  //exists:books,id'
         );
-       /**  Не зрозумів як об'єднати помилки в одну...  */
+        /**  Не зрозумів як об'єднати помилки в одну...  */
         if ($idValidator->fails()) {
             exit($idValidator->errors()) . PHP_EOL;
         }
@@ -30,7 +30,7 @@ class BookUpdateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255', 'regex:/^[\p{L}0-9\-"\s]+$/u'],
             'year' => ['required', 'integer', 'max:' . $currentYear, 'min:0'],
-            'countPages' => ['required', 'integer', 'max:1000'],
+            'countPages' => ['required', 'integer', 'max:5000'],
         ];
     }
 

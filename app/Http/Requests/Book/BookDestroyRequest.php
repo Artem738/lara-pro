@@ -3,26 +3,54 @@
 namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class BookDestroyRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
+
     public function rules(): array
     {
-        return [
-            //
-        ];
+        $id = $this->route('id');
+
+        $idValidator = Validator::make(
+            ['id' => $id],
+            ['id' => 'required|integer']
+        );
+
+        if ($idValidator->fails()) {
+            exit($idValidator->errors()) . PHP_EOL;
+
+        }
+
+        return [];
     }
+
+//    public function rules(): array
+//    {
+//        echo "FKN VALIDATOR REQUEST" . PHP_EOL;
+//        $id = $this->route('id');
+//
+//        $idValidator = Validator::make(
+//            ['id' => $id], ['id' => 'required', 'integer'],  //exists:books,id'
+//        );
+//        /**  Не зрозумів як об'єднати помилки в одну...  */
+//        if ($idValidator->fails()) {
+//            exit($idValidator->errors()) . PHP_EOL;
+//        }
+//
+//        return $idValidator->errors()->toArray();
+//    }
+
+
+//    protected function failedValidation($validator)
+//    {
+//        throw new ValidationException($validator, response()->json($this->jsonResponse($validator), 422));
+//    }
+//
+//    protected function jsonResponse($validator)
+//    {
+//        return $validator->errors();
+//    }
 }

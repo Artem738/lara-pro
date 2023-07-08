@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Book\BookDestroyRequest;
+use App\Http\Requests\Book\BookShowRequest;
 use App\Http\Requests\Book\BookStoreRequest;
 use App\Http\Requests\Book\BookUpdateRequest;
 
@@ -13,6 +15,7 @@ use Illuminate\Http\Response;
 class BookController extends Controller
 {
     private array $bookObjectsDemoArray;
+
     public function __construct()
     {
         $this->bookObjectsDemoArray = [
@@ -67,17 +70,13 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(BookShowRequest $request, string $id)
     {
-
-        // Найти книгу с указанным id
         $book = collect($this->bookObjectsDemoArray)->firstWhere('id', $id);
 
         if ($book) {
-            // Вернуть ресурс BookResource в виде JSON-ответа
             return new BookResource($book);
         }
-        // Вернуть сообщение об ошибке, если книга не найдена
         return response()->json(['error' => 'Book not found'], 404);
 
     }
@@ -89,7 +88,7 @@ class BookController extends Controller
     {
         $validatedData = $request->validated();
 
-        $updatedBook = (object) [
+        $updatedBook = (object)[
             'id' => $request['id'],
             'name' => $validatedData['name'],
             'author' => $validatedData['author'],
@@ -103,8 +102,11 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(BookDestroyRequest $request, string $id)
     {
-        //
+        //$request->validated();
+        //  curl -X DELETE http://lara-pro.loc/api/books/123    BookUpdateRequest
+        echo "destroy ".  $id . PHP_EOL;
+
     }
 }

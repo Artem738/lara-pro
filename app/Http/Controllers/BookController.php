@@ -22,7 +22,7 @@ class BookController extends Controller
                 'name' => 'Book 1',
                 'author' => 'Author 1',
                 'year' => 2021,
-                'countPages' => 200,
+                'countPages' => 100,
             ],
             (object)[
                 'id' => 2,

@@ -3,11 +3,10 @@
 namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rule;
+
 
 class BookUpdateRequest extends FormRequest
 {
@@ -19,7 +18,7 @@ class BookUpdateRequest extends FormRequest
         $id = $this->route('id');
 
         $idValidator = Validator::make(
-            ['id' => $id], ['id' => 'required|integer'],  //exists:books,id'
+            ['id' => $id], ['id' => 'required|integer'],
         );
         /**  Не зрозумів як об'єднати помилки в одну...  */
         if ($idValidator->fails()) {

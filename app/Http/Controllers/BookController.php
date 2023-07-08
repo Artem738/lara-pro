@@ -8,8 +8,6 @@ use App\Http\Requests\Book\BookStoreRequest;
 use App\Http\Requests\Book\BookUpdateRequest;
 
 use App\Http\Resources\BookResource;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 
 class BookController extends Controller
@@ -106,7 +104,7 @@ class BookController extends Controller
     {
         //$request->validated();
         //  curl -X DELETE http://lara-pro.loc/api/books/123    BookUpdateRequest
-        echo "destroy ".  $id . PHP_EOL;
+        echo "destroy " . $id . PHP_EOL;
 
     }
 }

@@ -105,6 +105,5 @@ class BookController extends Controller
         //$request->validated();
         //  curl -X DELETE http://lara-pro.loc/api/books/123    BookUpdateRequest
         echo "destroy " . $id . PHP_EOL;
-
     }
 }

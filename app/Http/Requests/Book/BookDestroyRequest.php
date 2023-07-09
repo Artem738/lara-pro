@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Validator;
 
 class BookDestroyRequest extends FormRequest
 {
-
-
     public function rules(): array
     {
         $id = $this->route('id');
@@ -20,7 +18,6 @@ class BookDestroyRequest extends FormRequest
 
         if ($idValidator->fails()) {
             exit($idValidator->errors()) . PHP_EOL;
-
         }
 
         return [];

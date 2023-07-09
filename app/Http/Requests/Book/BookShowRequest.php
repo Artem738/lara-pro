@@ -4,6 +4,7 @@ namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class BookShowRequest extends FormRequest
 {
@@ -19,11 +20,17 @@ class BookShowRequest extends FormRequest
         );
 
         if ($idValidator->fails()) {
-            exit($idValidator->errors()) . PHP_EOL;
-
+            $this->failedValidation($idValidator);
         }
 
         return [];
+    }
+
+    protected function failedValidation($validator)
+    {
+        $errors = $validator->errors();
+        $response = response()->json($errors, 422);
+        throw new ValidationException($validator, $response);
     }
 
 }

@@ -35,12 +35,9 @@ class BookUpdateRequest extends FormRequest
 
     protected function failedValidation($validator)
     {
-        throw new ValidationException($validator, response()->json($this->jsonResponse($validator), 422));
-    }
-
-    protected function jsonResponse($validator)
-    {
-        return $validator->errors();
+        $errors = $validator->errors();
+        $response = response()->json($errors, 422);
+        throw new ValidationException($validator, $response);
     }
 
 }

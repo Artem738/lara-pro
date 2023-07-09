@@ -102,8 +102,11 @@ class BookController extends Controller
      */
     public function destroy(BookDestroyRequest $request, string $id)
     {
-        //$request->validated();
-        //  curl -X DELETE http://lara-pro.loc/api/books/123    BookUpdateRequest
-        echo "destroy " . $id . PHP_EOL;
+        return response()->json(['message' => 'Book id - ' . $id . ' deleted successfully']);
     }
 }
+
+//$validatedData = $request->validated();
+//$request->validated();
+//  curl -X DELETE http://lara-pro.loc/api/books/123    BookUpdateRequest
+// echo "destroy " . $id . PHP_EOL;

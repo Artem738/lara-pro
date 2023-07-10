@@ -16,7 +16,7 @@ class BookStoreRequest extends FormRequest
         $currentYear = Date::now()->year;
 
         return [
-            'name' => ['required', 'string', 'max:255'], //Rule::unique('books') - check in table!!!
+            'name' => ['required', 'string', 'max:255'], //Rule::unique('books') - check in  table!!!
             'author' => ['required', 'string', 'max:255', 'regex:/^[\p{L}0-9\-"\s]+$/u'],
             'year' => ['required', 'integer', 'max:' . $currentYear ],
             'countPages' => ['required', 'integer',  'max:5000'],

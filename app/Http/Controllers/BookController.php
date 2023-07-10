@@ -68,9 +68,10 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(BookShowRequest $request, string $id)
+    public function show(BookShowRequest $request)
     {
-        $book = collect($this->bookObjectsDemoArray)->firstWhere('id', $id);
+        $validatedData = $request->validated();
+        $book = collect($this->bookObjectsDemoArray)->firstWhere('id', $validatedData['id']);
 
         if ($book) {
             return new BookResource($book);
@@ -82,12 +83,12 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BookUpdateRequest $request, string $id)
+    public function update(BookUpdateRequest $request)
     {
         $validatedData = $request->validated();
 
         $updatedBook = (object)[
-            'id' => $request['id'],
+            'id' => $validatedData['id'],
             'name' => $validatedData['name'],
             'author' => $validatedData['author'],
             'year' => $validatedData['year'],
@@ -100,9 +101,10 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BookDestroyRequest $request, string $id)
+    public function destroy(BookDestroyRequest $request)
     {
-        return response()->json(['message' => 'Book id - ' . $id . ' deleted successfully']);
+        $validatedData = $request->validated();
+        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' deleted successfully']);
     }
 }
 

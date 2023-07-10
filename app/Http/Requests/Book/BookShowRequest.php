@@ -3,27 +3,24 @@
 namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class BookShowRequest extends FormRequest
 {
-
+    protected function prepareForValidation(): void
+    {
+        $this->merge(
+            [
+                'id' => $this->route('id'),
+            ]
+        );
+    }
 
     public function rules(): array
     {
-        $id = $this->route('id');
-
-        $idValidator = Validator::make(
-            ['id' => $id],
-            ['id' => 'required|integer']
-        );
-
-        if ($idValidator->fails()) {
-            $this->failedValidation($idValidator);
-        }
-
-        return [];
+        return [
+            'id' => ['required', 'integer', 'numeric']
+        ];
     }
 
     protected function failedValidation($validator)

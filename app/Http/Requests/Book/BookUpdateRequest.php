@@ -10,22 +10,21 @@ use Illuminate\Validation\ValidationException;
 
 class BookUpdateRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge(
+            [
+                'id' => $this->route('id'),
+            ]
+        );
+    }
+
     public function rules()
     {
-
         $currentYear = Date::now()->year;
 
-        $id = $this->route('id');
-
-        $idValidator = Validator::make(
-            ['id' => $id], ['id' => 'required|integer'],
-        );
-        /**  Не зрозумів як об'єднати помилки в одну...  */
-        if ($idValidator->fails()) {
-            exit($idValidator->errors()) . PHP_EOL;
-        }
-
         return [
+            'id' => ['required', 'integer', 'numeric'],
             'name' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255', 'regex:/^[\p{L}0-9\-"\s]+$/u'],
             'year' => ['required', 'integer', 'max:' . $currentYear, 'min:0'],

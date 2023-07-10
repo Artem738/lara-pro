@@ -4,7 +4,6 @@ namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 

@@ -10,7 +10,7 @@ use App\Http\Requests\Book\BookUpdateRequest;
 use App\Http\Resources\BookResource;
 
 
-class BookController extends Controller
+class BookOldHWController extends Controller
 {
     private array $bookObjectsDemoArray;
 

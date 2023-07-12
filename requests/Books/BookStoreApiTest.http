@@ -1,0 +1,29 @@
+### Send request with dynamic variables in request's body
+
+### Send POST request with json body
+
+POST http://lara-pro.loc/api/books/
+Content-Type: application/json
+
+{
+    "name": "Book {{$random.alphabetic(5)}} {{$randomInt}}",
+    "year": {{$random.integer(1970,2023)}},
+    "lang": "ua",
+    "pages": "{{$random.integer(1, 55000)}}"
+}
+
+### http://lara-curl -X POST -d "name=Book Name&year=2022&lang=en&pages=200" http://lara-pro.loc/api/books
+
+
+#{
+# $languages = ['en', 'ua', 'pl', 'de'];
+#    "login": "{{$random.alphabetic(10)}}",
+#    "password": "{{$random.alphanumeric(8)}}",
+#    "email": "{{$random.email}}",
+#    "score": "{{$random.float(-10.2, 12.3)}}",
+#    "id": "{{$random.uuid}}",
+#    "attachment": "{{$random.hexadecimal(30)}}",
+#    "phone_number": "+{{$random.integer(100)}} ({{$random.integer(100, 999)}}) {{$random.integer(100, 999)}} {{$random.integer(10, 99)}}-{{$random.integer(10, 99)}}",
+#    "timestamp": "{{$isoTimestamp}}"
+#}
+

@@ -11,8 +11,8 @@ class BookDTO
         protected int    $year,
         protected string $lang,
         protected int    $pages,
-        protected Carbon $updated_at,
         protected Carbon $created_at,
+        protected Carbon $updated_at,
     ) {
     }
 

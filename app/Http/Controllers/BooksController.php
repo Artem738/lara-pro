@@ -47,29 +47,25 @@ class BooksController extends Controller
             now(),
         );
 
-
         $bookIterator = $this->booksService->store($bookDTO);
         $bookResource = new BookResource($bookIterator);
-
-        return response($bookResource, Response::HTTP_CREATED);
+        return response($bookResource, 201);  //201 - request was successful and as a result, a resource has been created.
     }
-
-
-    public function show(BookShowRequest $request, int $id)
-    {
-        $book = $this->booksService->getBookById($id);
-
-        if ($book) {
-            return new BookResource($book);
-        }
-
-        return response()->json(['error' => 'Book not found'], 404);
-    }
-
-
-    public function update(BookUpdateRequest $request, int $id)
+    /* SHOW DONE */
+    public function show(BookShowRequest $request)
     {
         $validatedData = $request->validated();
+        $bookIterator = $this->booksService->getBookById($validatedData['id']);
+        $bookResource = new BookResource($bookIterator);
+        return response($bookResource, 200);
+    }
+
+    /* UPDATE UNDER CONSTRUCTION !!!! */
+    public function update(BookUpdateRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        echo("done"); die();
 
         $bookDTO = new BookDTO(
             $validatedData['name'],

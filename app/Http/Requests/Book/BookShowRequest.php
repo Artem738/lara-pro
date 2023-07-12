@@ -3,12 +3,14 @@
 namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class BookShowRequest extends FormRequest
 {
     protected function prepareForValidation(): void
     {
+
         $this->merge(
             [
                 'id' => $this->route('id'),
@@ -19,7 +21,7 @@ class BookShowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'numeric']
+            'id' => ['required', 'integer', 'numeric', Rule::exists('books', 'id'),]
         ];
     }
 

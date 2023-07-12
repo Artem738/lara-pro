@@ -10,10 +10,22 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBook($bookDTO)
+    public function getBooks($startDate, $endDate, $year, $lang)
     {
-        // Логика выборки книг с учетом переданных параметров
-        // Возвращаем Iterator объект
+        $query = DB::table('books')
+            ->whereBetween('created_at', [new Carbon($startDate), new Carbon($endDate)]);
+
+        if ($year) {
+            $query->whereYear('created_at', $year);
+        }
+
+        if ($lang) {
+            $query->where('lang', $lang);
+        }
+
+        $books = $query->get();
+
+        return $books;
     }
 
     public function store(BookDTO $bookDTO): int
@@ -33,10 +45,19 @@ class BooksRepository
     }
 
 
-    public function updateBook($id, $bookDTO)
+    public function updateBook($id, BookDTO $bookDTO): bool
     {
-        // Логика обновления книги
-        // Возвращаем обновленный объект книги
+        $updated = DB::table('books')
+            ->where('id', $id)
+            ->update([
+                         'name' => $bookDTO->getName(),
+                         'year' => $bookDTO->getYear(),
+                         'lang' => $bookDTO->getLang(),
+                         'pages' => $bookDTO->getPages(),
+                         'updated_at' => $bookDTO->getUpdatedAt(),
+                     ]);
+
+        return $updated;
     }
 
     public function deleteBook($id)

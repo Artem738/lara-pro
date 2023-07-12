@@ -4,6 +4,7 @@ namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 
@@ -23,11 +24,11 @@ class BookUpdateRequest extends FormRequest
         $currentYear = Date::now()->year;
 
         return [
-            'id' => ['required', 'integer', 'numeric'],
-            'name' => ['required', 'string', 'max:255'],
-            'author' => ['required', 'string', 'max:255', 'regex:/^[\p{L}0-9\-"\s]+$/u'],
-            'year' => ['required', 'integer', 'max:' . $currentYear, 'min:0'],
-            'countPages' => ['required', 'integer', 'max:5000'],
+            'id' => ['required', 'integer', 'numeric', Rule::exists('books', 'id')],
+            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('books')],
+            'year' => ['required', 'integer', 'min:1970', 'max:' . $currentYear],
+            'lang' => ['required', 'string', Rule::in(['en', 'ua', 'pl', 'de'])],
+            'pages' => ['required', 'integer', 'min:10', 'max:55000'],
         ];
     }
 

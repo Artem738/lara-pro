@@ -20,9 +20,9 @@ class BooksController extends Controller
 
     }
 
+
     public function index(BookIndexRequest $request)
     {
-
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
         $year = $request->input('year');
@@ -61,22 +61,24 @@ class BooksController extends Controller
     }
 
     /* UPDATE UNDER CONSTRUCTION !!!! */
-    public function update(BookUpdateRequest $request)
+    public function update(BookUpdateRequest $request): BookResource
     {
         $validatedData = $request->validated();
+        $bookIterator = $this->booksService->getBookById($validatedData['id']);
 
-        echo("done"); die();
 
         $bookDTO = new BookDTO(
             $validatedData['name'],
             $validatedData['year'],
             $validatedData['lang'],
-            $validatedData['pages']
+            $validatedData['pages'],
+            $bookIterator->getCreatedAt(),
+            now(),
         );
 
-        $book = $this->booksService->updateBook($id, $bookDTO);
+        $book = $this->booksService->updateBook($validatedData['id'], $bookDTO);
 
-        return new BookResource($book);
+        return response( new BookResource($book), 200);
     }
 
     public function destroy(BookDestroyRequest $request, int $id)

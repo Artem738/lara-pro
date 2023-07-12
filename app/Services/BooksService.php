@@ -13,8 +13,10 @@ class BooksService
     ) {
     }
 
-    public function getBooks($bookDTO)
+    public function getBooks($startDate, $endDate, $year, $lang)
     {
+        $books = $this->booksRepository->getBooks($startDate, $endDate, $year, $lang);
+        return $books;
     }
 
     public function getBookById($id): BookIterator
@@ -34,9 +36,14 @@ class BooksService
     }
 
 
-    public function updateBook($id, BookDTO $bookDTO)
+    public function updateBook($id, $bookDTO): BookIterator
     {
-        return $this->booksRepository->updateBook($id, $bookDTO);
+        $isUpdated = $this->booksRepository->updateBook($id, $bookDTO);
+        if ($isUpdated == null) {
+            throw new Exception('Failed to update book.');
+        }
+        $bookIterator = $this->booksRepository->getBookById($id);
+        return new BookIterator($bookIterator);
     }
 
     public function deleteBook($id)

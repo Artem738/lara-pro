@@ -68,9 +68,10 @@ class BooksRepository
         return $updated;
     }
 
-    public function deleteBook($id)
+    public function deleteBook($id): bool
     {
-        // Логика удаления книги
+        $deleted = DB::table('books')->delete($id);
+        return $deleted > 0;
     }
 
     public function getBookById(int $id): BookIterator

@@ -65,7 +65,7 @@ class BooksController extends Controller
     }
 
     /* UPDATE UNDER CONSTRUCTION !!!! */
-    public function update(BookUpdateRequest $request): BookResource
+    public function update(BookUpdateRequest $request)
     {
         $validatedData = $request->validated();
         $bookIterator = $this->booksService->getBookById($validatedData['id']);
@@ -80,15 +80,16 @@ class BooksController extends Controller
             now(),
         );
 
-        $book = $this->booksService->updateBook($validatedData['id'], $bookDTO);
+        $bookIterator = $this->booksService->updateBook($validatedData['id'], $bookDTO);
 
-        return response(new BookResource($book), 200);
+        return response(new BookResource($bookIterator), 200);
     }
 
-    public function destroy(BookDestroyRequest $request, int $id)
+    public function destroy(BookDestroyRequest $request)
     {
-        $this->booksService->deleteBook($id);
+        $validatedData = $request->validated();
+        $this->booksService->deleteBook($validatedData['id']);
 
-        return response()->json(['message' => 'Book id - ' . $id . ' deleted successfully']);
+        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' deleted successfully']);
     }
 }

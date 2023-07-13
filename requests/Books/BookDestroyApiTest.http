@@ -1,0 +1,8 @@
+### DELETE request with disabled redirects
+# @no-redirect
+DELETE http://lara-pro.loc/api/books/21
+
+
+###
+
+# {{$random.integer(1,10)}}

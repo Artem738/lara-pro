@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\BookDTO;
 use App\Repositories\Books\BooksRepository;
 use App\Repositories\Books\Iterators\BookIterator;
+use Illuminate\Support\Facades\DB;
 
 class BooksService
 {
@@ -13,9 +14,17 @@ class BooksService
     ) {
     }
 
-    public function getBooks($startDate, $endDate, $year, $lang)
+    public function getBooksForIndex($startDate, $endDate, $year = null, $lang = null)
     {
-        $books = $this->booksRepository->getBooks($startDate, $endDate, $year, $lang);
+        $booksData = $this->booksRepository->getBooks($startDate, $endDate, $year, $lang);
+
+        $books = collect();
+
+        foreach ($booksData as $bookData) {
+            $bookIterator = new BookIterator($bookData);
+            $books->push($bookIterator);
+        }
+
         return $books;
     }
 

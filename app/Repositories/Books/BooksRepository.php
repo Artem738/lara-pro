@@ -10,23 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBooks($startDate, $endDate, $year, $lang)
+    public function getBooks($startDate, $endDate, $year = null, $lang = null): \Illuminate\Support\Collection
     {
         $query = DB::table('books')
-            ->whereBetween('created_at', [new Carbon($startDate), new Carbon($endDate)]);
+            ->whereBetween('created_at', [Carbon::parse($startDate), Carbon::parse($endDate)]); // [new Carbon($startDate), new Carbon($endDate)]
+        $booksCollection = collect($query->get());
 
         if ($year) {
-            $query->whereYear('created_at', $year);
+            $yearQuery = DB::table('books')
+                ->whereYear('created_at', $year)
+                ->get();
+            $booksCollection = $booksCollection->concat($yearQuery);
         }
 
         if ($lang) {
-            $query->where('lang', $lang);
+            $langQuery = DB::table('books')
+                ->where('lang', $lang)
+                ->get();
+            $booksCollection = $booksCollection->concat($langQuery);
         }
 
-        $books = $query->get();
-
-        return $books;
+        return $booksCollection;
     }
+
 
     public function store(BookDTO $bookDTO): int
     {
@@ -49,13 +55,15 @@ class BooksRepository
     {
         $updated = DB::table('books')
             ->where('id', $id)
-            ->update([
-                         'name' => $bookDTO->getName(),
-                         'year' => $bookDTO->getYear(),
-                         'lang' => $bookDTO->getLang(),
-                         'pages' => $bookDTO->getPages(),
-                         'updated_at' => $bookDTO->getUpdatedAt(),
-                     ]);
+            ->update(
+                [
+                    'name' => $bookDTO->getName(),
+                    'year' => $bookDTO->getYear(),
+                    'lang' => $bookDTO->getLang(),
+                    'pages' => $bookDTO->getPages(),
+                    'updated_at' => $bookDTO->getUpdatedAt(),
+                ]
+            );
 
         return $updated;
     }

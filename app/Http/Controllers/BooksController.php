@@ -6,6 +6,7 @@ use App\Http\Requests\Book\BookDestroyRequest;
 use App\Http\Requests\Book\BookShowRequest;
 use App\Http\Requests\Book\BookStoreRequest;
 use App\Http\Requests\Book\BookUpdateRequest;
+use App\Http\Requests\Book\BookIndexRequest;
 use App\Http\Resources\BookResource;
 use App\Services\BooksService;
 use App\DTO\BookDTO;
@@ -23,12 +24,14 @@ class BooksController extends Controller
 
     public function index(BookIndexRequest $request)
     {
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
-        $year = $request->input('year');
-        $lang = $request->input('lang');
+        $validatedData = $request->validated();
 
-        $books = $this->booksService->getBooks($startDate, $endDate, $year, $lang);
+        $books = $this->booksService->getBooksForIndex(
+            $validatedData['startDate'],
+            $validatedData['endDate'],
+            $validatedData['year'] ?? null,
+            $validatedData['lang'] ?? null,
+        );
 
         return BookResource::collection($books);
     }
@@ -51,6 +54,7 @@ class BooksController extends Controller
         $bookResource = new BookResource($bookIterator);
         return response($bookResource, 201);  //201 - request was successful and as a result, a resource has been created.
     }
+
     /* SHOW DONE */
     public function show(BookShowRequest $request)
     {
@@ -78,7 +82,7 @@ class BooksController extends Controller
 
         $book = $this->booksService->updateBook($validatedData['id'], $bookDTO);
 
-        return response( new BookResource($book), 200);
+        return response(new BookResource($book), 200);
     }
 
     public function destroy(BookDestroyRequest $request, int $id)

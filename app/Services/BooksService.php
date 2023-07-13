@@ -14,7 +14,7 @@ class BooksService
     ) {
     }
 
-    public function getBooksForIndex($startDate, $endDate, $year = null, $lang = null)
+    public function getBooksForIndex($startDate, $endDate, $year = null, $lang = null): \Illuminate\Support\Collection
     {
         $booksData = $this->booksRepository->getBooks($startDate, $endDate, $year, $lang);
 

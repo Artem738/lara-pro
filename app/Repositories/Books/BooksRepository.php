@@ -12,6 +12,8 @@ class BooksRepository
 {
     public function getBooks(BookIndexDTO $bookIndexDTO) //  : \Illuminate\Support\Collection
     {
+        ///TODO: Переробити, щоб одразу через Ітератор записувалось, а не у контроллері.
+        ///
         $query = DB::table('books')
             ->whereBetween('created_at', [Carbon::parse($bookIndexDTO->getStartDate()), Carbon::parse($bookIndexDTO->getEndDate())]); // [new Carbon($startDate), new Carbon($endDate)]
         $booksCollection = collect($query->get());
@@ -27,7 +29,7 @@ class BooksRepository
             $langQuery = DB::table('books')
                 ->where('lang', $bookIndexDTO->getLang())
                 ->get();
-            $booksCollection = $booksCollection->concat($langQuery);
+            $booksCollection = $booksCollection->concat( $langQuery);
         }
 
         return $booksCollection;
@@ -76,6 +78,7 @@ class BooksRepository
 
     public function getBookById(int $id): BookIterator
     {
+        //TODO:Доробити вибірку тільки потрібних даних.
         $bookData = DB::table('books')
             ->where('id', '=', $id)
             ->first();

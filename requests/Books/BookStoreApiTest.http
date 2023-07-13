@@ -8,7 +8,7 @@ Content-Type: application/json
 {
     "name": "Book {{$random.alphabetic(5)}} {{$randomInt}}",
     "year": {{$random.integer(1970,2023)}},
-    "lang": "de",
+    "lang": "de ",
     "pages": "{{$random.integer(1, 55000)}}"
 }
 

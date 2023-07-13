@@ -5,8 +5,8 @@ namespace App\Services;
 use App\DTO\BookDTO;
 use App\Repositories\Books\BooksRepository;
 use App\Repositories\Books\Iterators\BookIterator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Response;
+use Exception;
+
 
 class BooksService
 {
@@ -15,7 +15,7 @@ class BooksService
     ) {
     }
 
-    public function getBooksForIndex($startDate, $endDate, $year = null, $lang = null): \Illuminate\Support\Collection
+    public function getBooksForIndex($startDate, $endDate, $year = null, $lang = null): \Illuminate\Support\Collection //РОЗІБРАТИСЯ ТРЕБА ТАК ЧИ НІ!!!!
     {
         $booksData = $this->booksRepository->getBooks($startDate, $endDate, $year, $lang);
 
@@ -56,8 +56,8 @@ class BooksService
         return new BookIterator($bookIterator);
     }
 
-    public function deleteBook($id)
+    public function deleteBook($id): bool
     {
-        $this->booksRepository->deleteBook($id);
+        return $this->booksRepository->deleteBook($id);
     }
 }

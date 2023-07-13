@@ -21,7 +21,7 @@ class BooksController extends Controller
 
     }
 
-
+    /* INDREX DONE */
     public function index(BookIndexRequest $request)
     {
         $validatedData = $request->validated();
@@ -88,8 +88,12 @@ class BooksController extends Controller
     public function destroy(BookDestroyRequest $request)
     {
         $validatedData = $request->validated();
-        $this->booksService->deleteBook($validatedData['id']);
-
-        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' deleted successfully']);
+        if ($this->booksService->deleteBook($validatedData['id'])) {
+            return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' deleted successfully']);
+        }
+        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' delete failure. Or  NO CONTENT.']);
     }
+
+
+
 }

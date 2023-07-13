@@ -1,8 +1,11 @@
 <?php
 
+//namespace App\DTO;
 namespace App\Services;
 
+
 use App\DTO\BookDTO;
+use App\DTO\BookIndexDTO;
 use App\Repositories\Books\BooksRepository;
 use App\Repositories\Books\Iterators\BookIterator;
 use Exception;
@@ -15,9 +18,9 @@ class BooksService
     ) {
     }
 
-    public function getBooksForIndex($startDate, $endDate, $year = null, $lang = null): \Illuminate\Support\Collection //РОЗІБРАТИСЯ ТРЕБА ТАК ЧИ НІ!!!!
+    public function getBooksForIndex(BookIndexDTO $bookIndexDTO) ///: \Illuminate\Support\Collection //РОЗІБРАТИСЯ ТРЕБА ТАК ЧИ НІ!!!!
     {
-        $booksData = $this->booksRepository->getBooks($startDate, $endDate, $year, $lang);
+        $booksData = $this->booksRepository->getBooks($bookIndexDTO);
 
         $books = collect();
 

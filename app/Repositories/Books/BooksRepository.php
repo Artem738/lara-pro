@@ -6,26 +6,26 @@ use App\Repositories\Books\Iterators\BookIterator;
 use App\DTO\BookDTO;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use App\DTO\BookIndexDTO;
 
 class BooksRepository
 {
-    public function getBooks($startDate, $endDate, $year = null, $lang = null): \Illuminate\Support\Collection
+    public function getBooks(BookIndexDTO $bookIndexDTO) //  : \Illuminate\Support\Collection
     {
         $query = DB::table('books')
-            ->whereBetween('created_at', [Carbon::parse($startDate), Carbon::parse($endDate)]); // [new Carbon($startDate), new Carbon($endDate)]
+            ->whereBetween('created_at', [Carbon::parse($bookIndexDTO->getStartDate()), Carbon::parse($bookIndexDTO->getEndDate())]); // [new Carbon($startDate), new Carbon($endDate)]
         $booksCollection = collect($query->get());
 
-        if ($year) {
+        if ($bookIndexDTO->getYear()) {
             $yearQuery = DB::table('books')
-                ->whereYear('created_at', $year)
+                ->whereYear('created_at', $bookIndexDTO->getYear())
                 ->get();
             $booksCollection = $booksCollection->concat($yearQuery);
         }
 
-        if ($lang) {
+        if ($bookIndexDTO->getLang()) {
             $langQuery = DB::table('books')
-                ->where('lang', $lang)
+                ->where('lang', $bookIndexDTO->getLang())
                 ->get();
             $booksCollection = $booksCollection->concat($langQuery);
         }

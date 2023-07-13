@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\BookDTO;
+use App\DTO\BookIndexDTO;
 use App\Http\Requests\Book\BookDestroyRequest;
 use App\Http\Requests\Book\BookShowRequest;
 use App\Http\Requests\Book\BookStoreRequest;
@@ -9,7 +11,8 @@ use App\Http\Requests\Book\BookUpdateRequest;
 use App\Http\Requests\Book\BookIndexRequest;
 use App\Http\Resources\BookResource;
 use App\Services\BooksService;
-use App\DTO\BookDTO;
+
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -26,12 +29,14 @@ class BooksController extends Controller
     {
         $validatedData = $request->validated();
 
-        $books = $this->booksService->getBooksForIndex(
-            $validatedData['startDate'],
-            $validatedData['endDate'],
+        $bookIndexDTO = new BookIndexDTO(
+            new Carbon($validatedData['startDate']),
+            new Carbon($validatedData['endDate']),
             $validatedData['year'] ?? null,
             $validatedData['lang'] ?? null,
         );
+
+        $books = $this->booksService->getBooksForIndex($bookIndexDTO);
 
         return BookResource::collection($books);
     }
@@ -64,7 +69,7 @@ class BooksController extends Controller
         return response($bookResource, 200);
     }
 
-    /* UPDATE UNDER CONSTRUCTION !!!! */
+    /* UPDATE DONE */
     public function update(BookUpdateRequest $request)
     {
         $validatedData = $request->validated();
@@ -93,7 +98,6 @@ class BooksController extends Controller
         }
         return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' delete failure. Or  NO CONTENT.']);
     }
-
 
 
 }

@@ -6,6 +6,7 @@ use App\DTO\BookDTO;
 use App\Repositories\Books\BooksRepository;
 use App\Repositories\Books\Iterators\BookIterator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
 
 class BooksService
 {
@@ -48,7 +49,7 @@ class BooksService
     public function updateBook($id, $bookDTO): BookIterator
     {
         $isUpdated = $this->booksRepository->updateBook($id, $bookDTO);
-        if ($isUpdated == null) {
+        if ($isUpdated == null) { //ругається на ===
             throw new Exception('Failed to update book.');
         }
         $bookIterator = $this->booksRepository->getBookById($id);

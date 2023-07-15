@@ -94,7 +94,8 @@ class BooksController extends Controller
         if ($this->booksService->deleteBook($validatedData['id'])) {
             return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' deleted successfully']);
         }
-        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' delete failure. Or  NO CONTENT.']);
+        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' delete failure or no content.'], 422);
+
     }
 
 

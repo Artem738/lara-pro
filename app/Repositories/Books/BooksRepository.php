@@ -8,27 +8,23 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBooks(BookIndexDTO $bookIndexDTO) //  : \Illuminate\Support\Collection
+    public function getBooks(BookIndexDTO $bookIndexDTO)
     {
-        ///TODO: Переробити, щоб одразу через Ітератор записувалось, а не у контроллері.
-        ///
         $query = DB::table('books')
-            ->whereBetween('created_at', [Carbon::parse($bookIndexDTO->getStartDate()), Carbon::parse($bookIndexDTO->getEndDate())]); // [new Carbon($startDate), new Carbon($endDate)]
-        $booksCollection = collect($query->get());
+            ->whereBetween('created_at', [
+                Carbon::parse($bookIndexDTO->getStartDate()),
+                Carbon::parse($bookIndexDTO->getEndDate())
+            ]);
 
         if ($bookIndexDTO->getYear()) {
-            $yearQuery = DB::table('books')
-                ->whereYear('created_at', $bookIndexDTO->getYear())
-                ->get();
-            $booksCollection = $booksCollection->concat($yearQuery);
+            $query->orWhereYear('created_at', $bookIndexDTO->getYear());
         }
 
         if ($bookIndexDTO->getLang()) {
-            $langQuery = DB::table('books')
-                ->where('lang', $bookIndexDTO->getLang())
-                ->get();
-            $booksCollection = $booksCollection->concat( $langQuery);
+            $query->orWhere('lang', $bookIndexDTO->getLang());
         }
+
+        $booksCollection = collect($query->get());
 
         return $booksCollection;
     }

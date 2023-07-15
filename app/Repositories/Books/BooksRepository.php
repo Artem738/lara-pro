@@ -3,10 +3,8 @@
 namespace App\Repositories\Books;
 
 use App\Repositories\Books\Iterators\BookIterator;
-use App\DTO\BookDTO;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\DTO\BookIndexDTO;
 
 class BooksRepository
 {
@@ -36,7 +34,7 @@ class BooksRepository
     }
 
 
-    public function store(BookDTO $bookDTO): int
+    public function store(BookStoreDTO $bookDTO): int
     {
         $bookId = DB::table('books')->insertGetId(
             [
@@ -53,7 +51,7 @@ class BooksRepository
     }
 
 
-    public function updateBook($id, BookDTO $bookDTO): bool
+    public function updateBook($id, BookStoreDTO $bookDTO): bool
     {
         $updated = DB::table('books')
             ->where('id', $id)

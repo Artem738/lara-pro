@@ -4,8 +4,8 @@
 namespace App\Services;
 
 
-use App\DTO\BookDTO;
-use App\DTO\BookIndexDTO;
+use App\Repositories\Books\BookStoreDTO;
+use App\Repositories\Books\BookIndexDTO;
 use App\Repositories\Books\BooksRepository;
 use App\Repositories\Books\Iterators\BookIterator;
 use Exception;
@@ -38,7 +38,7 @@ class BooksService
         return new BookIterator($bookIterator);
     }
 
-    public function store(BookDTO $bookDTO): BookIterator
+    public function store(BookStoreDTO $bookDTO): BookIterator
     {
         $bookId = $this->booksRepository->store($bookDTO);
 

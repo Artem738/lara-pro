@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\BookDTO;
-use App\DTO\BookIndexDTO;
 use App\Http\Requests\Book\BookDestroyRequest;
+use App\Http\Requests\Book\BookIndexRequest;
 use App\Http\Requests\Book\BookShowRequest;
 use App\Http\Requests\Book\BookStoreRequest;
 use App\Http\Requests\Book\BookUpdateRequest;
-use App\Http\Requests\Book\BookIndexRequest;
 use App\Http\Resources\BookResource;
+use App\Repositories\Books\BookStoreDTO;
+use App\Repositories\Books\BookIndexDTO;
 use App\Services\BooksService;
-
 use Carbon\Carbon;
-use Symfony\Component\HttpFoundation\Response;
 
 
 class BooksController extends Controller
@@ -46,7 +44,7 @@ class BooksController extends Controller
     {
         $validatedData = $request->validated();
 
-        $bookDTO = new BookDTO(
+        $bookDTO = new BookStoreDTO(
             $validatedData['name'],
             $validatedData['year'],
             $validatedData['lang'],
@@ -76,7 +74,7 @@ class BooksController extends Controller
         $bookIterator = $this->booksService->getBookById($validatedData['id']);
 
 
-        $bookDTO = new BookDTO(
+        $bookDTO = new BookStoreDTO(
             $validatedData['name'],
             $validatedData['year'],
             $validatedData['lang'],

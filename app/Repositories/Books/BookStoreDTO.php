@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DTO;
+namespace App\Repositories\Books;
 
 use Carbon\Carbon;
 
-class BookDTO
+class BookStoreDTO
 {
     public function __construct(
         protected string $name,

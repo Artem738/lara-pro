@@ -24,7 +24,7 @@ class EnumTest extends Command
 
        //echo LangEnum::DE->getValue();
         //echo LangEnum::DE;
-        //echo LangEnum::DE->getValue();
+
         //LangEnum::from($validatedData['lang']);
 
         // dd(LangEnum::cases().'name'). PHP_EOL;

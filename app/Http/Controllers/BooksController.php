@@ -33,7 +33,7 @@ class BooksController extends Controller
             new Carbon($validatedData['startDate']),
             new Carbon($validatedData['endDate']),
             $validatedData['year'] ?? null,
-            $validatedData['lang'] ?? null,
+            LangEnum::from($validatedData['lang']) ?? null,
         );
 
         $books = $this->booksService->getBooksForIndex($bookIndexDTO);

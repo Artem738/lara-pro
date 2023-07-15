@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Book;
 
+use App\Enum\LangEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rule;
@@ -16,7 +17,7 @@ class BookIndexRequest extends FormRequest
             'startDate' => ['required', 'date', 'before:endDate'],
             'endDate' => ['required', 'date', 'after:startDate'],
             'year' => ['integer', 'min:1970', 'max:' . $currentYear],
-            'lang' => ['string', Rule::in(['en', 'ua', 'pl', 'de'])],
+            'lang' => ['string', Rule::in(array_column(LangEnum::cases(), 'value'))],
 
         ];
     }

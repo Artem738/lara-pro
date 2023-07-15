@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Books\DTO;
 
+use App\Enum\LangEnum;
 use Carbon\Carbon;
 
 class BookIndexDTO
@@ -10,7 +11,7 @@ class BookIndexDTO
         protected Carbon $startDate,
         protected Carbon $endDate,
         protected ?int    $year,
-        protected ?string $lang,
+        protected ?LangEnum $lang,
     ) {
     }
 
@@ -35,7 +36,7 @@ class BookIndexDTO
         return $this->year;
     }
 
-    public function getLang(): ?string
+    public function getLang(): ?LangEnum
     {
         return $this->lang;
     }

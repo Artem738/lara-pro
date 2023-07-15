@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Book;
 
+use App\Enum\LangEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rule;
@@ -16,7 +17,7 @@ class BookStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('books')],
             'year' => ['required', 'integer', 'min:1970', 'max:' . $currentYear],
-            'lang' => ['required', 'string', Rule::in(['en', 'ua', 'pl', 'de'])],
+            'lang' => ['required', 'string', Rule::in(array_column(LangEnum::cases(), 'value'))],
             'pages' => ['required', 'integer', 'min:10', 'max:55000'],
         ];
     }

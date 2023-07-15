@@ -2,17 +2,18 @@
 
 namespace App\Repositories\Books\DTO;
 
+use App\Enum\LangEnum;
 use Carbon\Carbon;
 
 class BookStoreDTO
 {
     public function __construct(
-        protected string $name,
-        protected int    $year,
-        protected string $lang,
-        protected int    $pages,
-        protected Carbon $created_at,
-        protected Carbon $updated_at,
+        protected string   $name,
+        protected int      $year,
+        protected LangEnum $lang,
+        protected int      $pages,
+        protected Carbon   $created_at,
+        protected Carbon   $updated_at,
     ) {
     }
 
@@ -26,7 +27,7 @@ class BookStoreDTO
         return $this->year;
     }
 
-    public function getLang(): string
+    public function getLang(): LangEnum
     {
         return $this->lang;
     }

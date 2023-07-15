@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\LangEnum;
 use App\Http\Requests\Book\BookDestroyRequest;
 use App\Http\Requests\Book\BookIndexRequest;
 use App\Http\Requests\Book\BookShowRequest;
@@ -48,7 +49,7 @@ class BooksController extends Controller
         $bookDTO = new BookStoreDTO(
             $validatedData['name'],
             $validatedData['year'],
-            $validatedData['lang'],
+            LangEnum::from($validatedData['lang']),
             $validatedData['pages'],
             now(),
             now(),
@@ -79,7 +80,7 @@ class BooksController extends Controller
             $validatedData['id'],
             $validatedData['name'],
             $validatedData['year'],
-            $validatedData['lang'],
+            LangEnum::from($validatedData['lang']),
             $validatedData['pages'],
             $bookIterator->getCreatedAt(),
             now(),

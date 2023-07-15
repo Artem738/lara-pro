@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBooks(BookIndexDTO $bookIndexDTO)
+    public function getBooks(BookIndexDTO $bookIndexDTO): \Illuminate\Support\Collection
     {
         $query = DB::table('books')
-            ->whereBetween('created_at', [
+            ->whereBetween(
+                'created_at', [
                 Carbon::parse($bookIndexDTO->getStartDate()),
                 Carbon::parse($bookIndexDTO->getEndDate())
-            ]);
+            ]
+            );
 
         if ($bookIndexDTO->getYear()) {
             $query->orWhereYear('created_at', $bookIndexDTO->getYear());
@@ -24,9 +26,7 @@ class BooksRepository
             $query->orWhere('lang', $bookIndexDTO->getLang());
         }
 
-        $booksCollection = collect($query->get());
-
-        return $booksCollection;
+        return collect($query->get());
     }
 
 

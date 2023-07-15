@@ -7,11 +7,12 @@ use App\Repositories\Books\DTO\BookStoreDTO;
 use App\Repositories\Books\DTO\BookUpdateDTO;
 use App\Repositories\Books\Iterators\BookIterator;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBooks(BookIndexDTO $bookIndexDTO): \Illuminate\Support\Collection
+    public function getBooksBetweenYearAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection
     {
         $query = DB::table('books')
             ->whereBetween(
@@ -20,18 +21,18 @@ class BooksRepository
                                 Carbon::parse($bookIndexDTO->getEndDate())
                             ]
             );
-
         if ($bookIndexDTO->getYear()) {
             $query->orWhereYear('created_at', $bookIndexDTO->getYear());
         }
-
         if ($bookIndexDTO->getLang()) {
-            $query->orWhere('lang', $bookIndexDTO->getLang());
+            $query->orWhere('lang', $bookIndexDTO->getLang()->value);
         }
-
-        return collect($query->get());
+        return collect(
+            $query->
+            select('id', 'name', 'year', 'lang', 'pages', 'created_at', 'updated_at')
+                ->get()
+        );
     }
-
 
     public function store(BookStoreDTO $bookDTO): int
     {
@@ -48,7 +49,6 @@ class BooksRepository
 
         return $bookId;
     }
-
 
     public function updateBook(BookUpdateDTO $bookUpdateDTO): bool
     {
@@ -75,11 +75,10 @@ class BooksRepository
 
     public function getBookById(int $id): BookIterator
     {
-        //TODO:Доробити вибірку тільки потрібних даних.
         $bookData = DB::table('books')
             ->where('id', '=', $id)
+            ->select('id', 'name', 'year', 'lang', 'pages', 'created_at', 'updated_at')
             ->first();
-        //var_dump($book); exit();
         return new BookIterator($bookData);
     }
 

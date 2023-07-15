@@ -24,7 +24,7 @@ class BooksController extends Controller
 
     }
 
-    /* INDREX DONE */
+    /* INDEX DONE */
     public function index(BookIndexRequest $request)
     {
         $validatedData = $request->validated();
@@ -97,7 +97,7 @@ class BooksController extends Controller
         if ($this->booksService->deleteBook($validatedData['id'])) {
             return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' deleted successfully']);
         }
-        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' delete failure or no content.'], 422);
+        return response()->json(['message' => 'Book id - ' . $validatedData['id'] . ' delete failure or no content.'], 422); //422 - Unprocessable Entity
 
     }
 

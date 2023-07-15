@@ -21,7 +21,7 @@ class BooksService
 
     public function getBooksForIndex(BookIndexDTO $bookIndexDTO): Collection
     {
-        $booksData = $this->booksRepository->getBooks($bookIndexDTO);
+        $booksData = $this->booksRepository->getBooksBetweenYearAndWhereLangAndYear($bookIndexDTO);
 
         $books = collect();
 

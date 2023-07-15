@@ -8,8 +8,9 @@ use App\Http\Requests\Book\BookShowRequest;
 use App\Http\Requests\Book\BookStoreRequest;
 use App\Http\Requests\Book\BookUpdateRequest;
 use App\Http\Resources\BookResource;
-use App\Repositories\Books\BookStoreDTO;
-use App\Repositories\Books\BookIndexDTO;
+use App\Repositories\Books\DTO\BookIndexDTO;
+use App\Repositories\Books\DTO\BookStoreDTO;
+use App\Repositories\Books\DTO\BookUpdateDTO;
 use App\Services\BooksService;
 use Carbon\Carbon;
 
@@ -36,7 +37,7 @@ class BooksController extends Controller
 
         $books = $this->booksService->getBooksForIndex($bookIndexDTO);
 
-        return BookResource::collection($books);
+        return response(BookResource::collection($books), 200);
     }
 
     /* STORE DONE */
@@ -74,7 +75,8 @@ class BooksController extends Controller
         $bookIterator = $this->booksService->getBookById($validatedData['id']);
 
 
-        $bookDTO = new BookStoreDTO(
+        $bookUpdateDTO = new BookUpdateDTO(
+            $validatedData['id'],
             $validatedData['name'],
             $validatedData['year'],
             $validatedData['lang'],
@@ -83,7 +85,7 @@ class BooksController extends Controller
             now(),
         );
 
-        $bookIterator = $this->booksService->updateBook($validatedData['id'], $bookDTO);
+        $bookIterator = $this->booksService->updateBook($bookUpdateDTO);
 
         return response(new BookResource($bookIterator), 200);
     }

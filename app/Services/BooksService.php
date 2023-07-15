@@ -4,9 +4,9 @@
 namespace App\Services;
 
 
-use App\Repositories\Books\BookStoreDTO;
-use App\Repositories\Books\BookIndexDTO;
 use App\Repositories\Books\BooksRepository;
+use App\Repositories\Books\DTO\BookIndexDTO;
+use App\Repositories\Books\DTO\BookStoreDTO;
 use App\Repositories\Books\Iterators\BookIterator;
 use Exception;
 
@@ -49,13 +49,13 @@ class BooksService
     }
 
 
-    public function updateBook($id, $bookDTO): BookIterator
+    public function updateBook($bookUpdateDTO): BookIterator
     {
-        $isUpdated = $this->booksRepository->updateBook($id, $bookDTO);
-        if ($isUpdated == null) { //ругається на ===
+        $isUpdated = $this->booksRepository->updateBook($bookUpdateDTO);
+        if ($isUpdated == null) {
             throw new Exception('Failed to update book.');
         }
-        $bookIterator = $this->booksRepository->getBookById($id);
+        $bookIterator = $this->booksRepository->getBookById($bookUpdateDTO->getId());
         return new BookIterator($bookIterator);
     }
 

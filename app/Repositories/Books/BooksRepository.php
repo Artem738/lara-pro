@@ -2,6 +2,9 @@
 
 namespace App\Repositories\Books;
 
+use App\Repositories\Books\DTO\BookIndexDTO;
+use App\Repositories\Books\DTO\BookStoreDTO;
+use App\Repositories\Books\DTO\BookUpdateDTO;
 use App\Repositories\Books\Iterators\BookIterator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -13,9 +16,9 @@ class BooksRepository
         $query = DB::table('books')
             ->whereBetween(
                 'created_at', [
-                Carbon::parse($bookIndexDTO->getStartDate()),
-                Carbon::parse($bookIndexDTO->getEndDate())
-            ]
+                                Carbon::parse($bookIndexDTO->getStartDate()),
+                                Carbon::parse($bookIndexDTO->getEndDate())
+                            ]
             );
 
         if ($bookIndexDTO->getYear()) {
@@ -47,21 +50,21 @@ class BooksRepository
     }
 
 
-    public function updateBook($id, BookStoreDTO $bookDTO): bool
+    public function updateBook(BookUpdateDTO $bookUpdateDTO): bool
     {
-        $updated = DB::table('books')
-            ->where('id', $id)
+        $updateStatus = DB::table('books')
+            ->where('id', $bookUpdateDTO->getId())
             ->update(
                 [
-                    'name' => $bookDTO->getName(),
-                    'year' => $bookDTO->getYear(),
-                    'lang' => $bookDTO->getLang(),
-                    'pages' => $bookDTO->getPages(),
-                    'updated_at' => $bookDTO->getUpdatedAt(),
+                    'name' => $bookUpdateDTO->getName(),
+                    'year' => $bookUpdateDTO->getYear(),
+                    'lang' => $bookUpdateDTO->getLang(),
+                    'pages' => $bookUpdateDTO->getPages(),
+                    'updated_at' => $bookUpdateDTO->getUpdatedAt(),
                 ]
             );
 
-        return $updated;
+        return $updateStatus;
     }
 
     public function deleteBook($id): bool

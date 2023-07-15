@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Books;
+namespace App\Repositories\Books\DTO;
 
 use Carbon\Carbon;
 

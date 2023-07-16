@@ -1,0 +1,10 @@
+### Send request with dynamic variables in request's body
+
+### Send POST request with json body
+
+POST http://lara-pro.loc/api/categories/
+Content-Type: application/json
+
+{
+    "name": "Category {{$random.alphabetic(3)}} {{$randomInt}}"
+}

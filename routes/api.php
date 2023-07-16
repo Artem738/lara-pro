@@ -1,13 +1,19 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BooksController;
 
 
 Route::apiResource('books', BooksController::class)->parameters(
     [
         'books' => 'id',
+    ]
+);
+
+Route::apiResource('categories', CategoriesController::class)->parameters(
+    [
+        'categories' => 'id',
     ]
 );
 

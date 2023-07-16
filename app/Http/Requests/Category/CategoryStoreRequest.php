@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Book;
+namespace App\Http\Requests\Category;
 
 use App\Enum\LangEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
-class BookStoreRequest extends FormRequest
+class CategoryStoreRequest extends FormRequest
 {
     public function rules()
     {
@@ -16,11 +16,7 @@ class BookStoreRequest extends FormRequest
         $currentYear = Date::now()->year;
 
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('books')],
-            'year' => ['required', 'integer', 'min:1970', 'max:' . $currentYear],
-            'lang' => ['required', 'string', Rule::in(array_column(LangEnum::cases(), 'value'))],
-            'pages' => ['required', 'integer', 'min:10', 'max:55000'],
-            'categoryId' => ['required', 'integer', Rule::exists('categories', 'id')],
+            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('categories')],
         ];
     }
 

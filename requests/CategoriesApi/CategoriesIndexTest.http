@@ -1,0 +1,3 @@
+### GET request with environment variables
+GET http://lara-pro.loc/api/categories/
+Accept: application/json

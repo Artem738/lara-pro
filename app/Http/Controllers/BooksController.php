@@ -21,7 +21,6 @@ class BooksController extends Controller
     public function __construct(
         protected BooksService $booksService
     ) {
-
     }
 
     /* INDEX DONE */

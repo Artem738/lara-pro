@@ -4,17 +4,15 @@ namespace App\Repositories\Categories\Iterators;
 
 class CategoryIterator
 {
-    /**
-     * @param int $id
-     * @param string $name
-     */
-    public function __construct(
+    protected int $id;
+    protected string $name;
 
-        protected int    $id,
-
-        protected string $name,
-    ) {
+    public function __construct(object $data)
+    {
+        $this->id = $data->id;
+        $this->name = $data->name;
     }
+
     /**
      * @return int
      */

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\CategoryCheckIdRequest;
 use App\Http\Requests\Category\CategoryStoreRequest;
 use App\Http\Resources\CategoryResource;
 use App\Repositories\Categories\DTO\CategoryStoreDTO;
@@ -47,9 +48,12 @@ class CategoriesController extends Controller
     /**
      *
      */
-    public function show(string $id)
+    public function show(CategoryCheckIdRequest $request)
     {
-        //
+        $valid = $request->validated();
+        $catIterator = $this->categoriesService->getCategoryById($valid['id']);
+        $catResource = new CategoryResource($catIterator);
+        return response($catResource, 200);
     }
 
     /**

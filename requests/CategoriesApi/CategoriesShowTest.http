@@ -1,0 +1,6 @@
+### GET request with disabled redirects
+# @no-redirect
+GET http://lara-pro.loc/api/categories/{{$random.integer(0,9)}}
+###
+
+# 9http://lara-pro.loc/api/books/{{$random.integer(1,9)}}

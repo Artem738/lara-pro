@@ -35,8 +35,6 @@ class CategoriesService
         return  $this->categoriesRepository->getCategoryById($id);
     }
 
-
-
     public function updateBook($bookUpdateDTO): CategoryIterator
     {
         $isUpdated = $this->categoriesRepository->updateBook($bookUpdateDTO);

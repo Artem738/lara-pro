@@ -29,6 +29,7 @@ class BooksService
     public function store(BookStoreDTO $bookDTO): BookIterator
     {
         $bookId = $this->booksRepository->store($bookDTO);
+
         return $this->booksRepository->getBookById($bookId);
     }
 

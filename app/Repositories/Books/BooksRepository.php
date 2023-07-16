@@ -17,9 +17,9 @@ class BooksRepository
         $query = DB::table('books')
             ->whereBetween(
                 'books.created_at', [
-                                Carbon::parse($bookIndexDTO->getStartDate()),
-                                Carbon::parse($bookIndexDTO->getEndDate())
-                            ]
+                                      Carbon::parse($bookIndexDTO->getStartDate()),
+                                      Carbon::parse($bookIndexDTO->getEndDate())
+                                  ]
             );
         if ($bookIndexDTO->getYear()) {
             $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
@@ -55,16 +55,17 @@ class BooksRepository
         return $books;
     }
 
-    public function store(BookStoreDTO $bookDTO): int
+    public function store(BookStoreDTO $bookStoreDTO): int
     {
         $bookId = DB::table('books')->insertGetId(
             [
-                'name' => $bookDTO->getName(),
-                'year' => $bookDTO->getYear(),
-                'lang' => $bookDTO->getLang(),
-                'pages' => $bookDTO->getPages(),
-                'created_at' => $bookDTO->getCreatedAt(),
-                'updated_at' => $bookDTO->getUpdatedAt(),
+                'name' => $bookStoreDTO->getName(),
+                'year' => $bookStoreDTO->getYear(),
+                'lang' => $bookStoreDTO->getLang(),
+                'pages' => $bookStoreDTO->getPages(),
+                'category_id' => $bookStoreDTO->getCategoryId(),
+                'created_at' => $bookStoreDTO->getCreatedAt(),
+                'updated_at' => $bookStoreDTO->getUpdatedAt(),
             ]
         );
 
@@ -97,17 +98,22 @@ class BooksRepository
     public function getBookById(int $id): BookIterator
     {
         $bookData = DB::table('books')
-            ->where('id', '=', $id)
+            ->where('books.id', '=', $id)
             ->select(
-                ['id',
-                    'name',
-                    'year',
-                    'lang',
-                    'pages',
-                    'created_at',
-                    'updated_at'
+                [
+                    'books.id',
+                    'books.name',
+                    'books.year',
+                    'books.lang',
+                    'books.pages',
+                    'books.created_at',
+                    'books.updated_at',
+                    'category_id',
+                    'categories.name as category_name',
                 ]
             )
+                ->join('categories', 'categories.id', '=', 'books.category_id')
+                ->get()
             ->first();
         return new BookIterator($bookData);
     }

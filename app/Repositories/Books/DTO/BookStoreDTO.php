@@ -12,9 +12,18 @@ class BookStoreDTO
         protected int      $year,
         protected LangEnum $lang,
         protected int      $pages,
+        protected int      $categoryId,
         protected Carbon   $created_at,
         protected Carbon   $updated_at,
     ) {
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId(): int
+    {
+        return $this->categoryId;
     }
 
     public function getName(): string

@@ -51,8 +51,9 @@ class BooksController extends Controller
             $validatedData['year'],
             LangEnum::from($validatedData['lang']),
             $validatedData['pages'],
-            now(),
-            now(),
+            $validatedData['categoryId'],
+            Carbon::now(),
+            Carbon::now(),
         );
 
         $bookIterator = $this->booksService->store($bookDTO);

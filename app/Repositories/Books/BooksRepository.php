@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBooksBetweenYearAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection
+    public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection
     {
         $query = DB::table('books')
             ->whereBetween(

@@ -18,7 +18,6 @@ class BookResource extends JsonResource
             'created_at' => $this->resource->getCreatedAt(),
             'updated_at' => $this->resource->getUpdatedAt(),
         ];
-
     }
 }
 

@@ -1,8 +1,6 @@
 <?php
-
 //namespace App\DTO;
 namespace App\Services;
-
 
 use App\Repositories\Books\BooksRepository;
 use App\Repositories\Books\DTO\BookIndexDTO;
@@ -10,7 +8,6 @@ use App\Repositories\Books\DTO\BookStoreDTO;
 use App\Repositories\Books\Iterators\BookIterator;
 use Exception;
 use Illuminate\Support\Collection;
-
 
 class BooksService
 {
@@ -21,34 +18,19 @@ class BooksService
 
     public function getBooksForIndex(BookIndexDTO $bookIndexDTO): Collection
     {
-        $booksData = $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
-
-        $books = collect();
-
-        foreach ($booksData as $bookData) {
-            $bookIterator = new BookIterator($bookData);
-            $books->push($bookIterator);
-        }
-
-        return $books;
+        return  $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
     }
 
     public function getBookById($id): BookIterator
     {
-        $book = $this->booksRepository->getBookById($id);
-        return new BookIterator($book);
+        return  $this->booksRepository->getBookById($id);
     }
 
     public function store(BookStoreDTO $bookDTO): BookIterator
     {
         $bookId = $this->booksRepository->store($bookDTO);
-
-        $book = $this->booksRepository->getBookById($bookId);
-
-        return new BookIterator($book);
-
+        return $this->booksRepository->getBookById($bookId);
     }
-
 
     public function updateBook($bookUpdateDTO): BookIterator
     {
@@ -56,8 +38,7 @@ class BooksService
         if ($isUpdated == null) {
             throw new Exception('Failed to update book.');
         }
-        $book = $this->booksRepository->getBookById($bookUpdateDTO->getId());
-        return new BookIterator($book);
+        return $this->booksRepository->getBookById($bookUpdateDTO->getId());
     }
 
     public function deleteBook($id): bool

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
-    public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection
+    public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection //of iterators
     {
         $query = DB::table('books')
             ->whereBetween(
@@ -27,11 +27,30 @@ class BooksRepository
         if ($bookIndexDTO->getLang()) {
             $query->orWhere('lang', $bookIndexDTO->getLang()->value);
         }
-        return collect(
+        $booksData = collect(
             $query->
-            select('id', 'name', 'year', 'lang', 'pages', 'created_at', 'updated_at')
+            select(
+                [
+                    'id',
+                    'name',
+                    'year',
+                    'lang',
+                    'pages',
+                    'created_at',
+                    'updated_at',
+                   // 'category_id',
+                ]
+            )
                 ->get()
         );
+
+        $books = collect();
+
+        foreach ($booksData as $bookData) {
+            $bookIterator = new BookIterator($bookData);
+            $books->push($bookIterator);
+        }
+        return $books;
     }
 
     public function store(BookStoreDTO $bookDTO): int
@@ -77,7 +96,16 @@ class BooksRepository
     {
         $bookData = DB::table('books')
             ->where('id', '=', $id)
-            ->select('id', 'name', 'year', 'lang', 'pages', 'created_at', 'updated_at')
+            ->select(
+                ['id',
+                    'name',
+                    'year',
+                    'lang',
+                    'pages',
+                    'created_at',
+                    'updated_at'
+                ]
+            )
             ->first();
         return new BookIterator($bookData);
     }

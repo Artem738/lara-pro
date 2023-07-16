@@ -10,7 +10,7 @@ Content-Type: application/json
     "year": {{$random.integer(1970,2023)}},
     "lang": "ua",
     "pages": "{{$random.integer(1, 55000)}}",
-    "categoryId": 1
+    "categoryId": {{$random.integer(1, 3)}}
 }
 
 ###

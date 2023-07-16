@@ -16,31 +16,33 @@ class BooksRepository
     {
         $query = DB::table('books')
             ->whereBetween(
-                'created_at', [
+                'books.created_at', [
                                 Carbon::parse($bookIndexDTO->getStartDate()),
                                 Carbon::parse($bookIndexDTO->getEndDate())
                             ]
             );
         if ($bookIndexDTO->getYear()) {
-            $query->orWhereYear('created_at', $bookIndexDTO->getYear());
+            $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
         }
         if ($bookIndexDTO->getLang()) {
-            $query->orWhere('lang', $bookIndexDTO->getLang()->value);
+            $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
         }
         $booksData = collect(
             $query->
             select(
                 [
-                    'id',
-                    'name',
-                    'year',
-                    'lang',
-                    'pages',
-                    'created_at',
-                    'updated_at',
-                   // 'category_id',
+                    'books.id',
+                    'books.name',
+                    'books.year',
+                    'books.lang',
+                    'books.pages',
+                    'books.created_at',
+                    'books.updated_at',
+                    'category_id',
+                    'categories.name as category_name',
                 ]
             )
+                ->join('categories', 'categories.id', '=', 'books.category_id')
                 ->get()
         );
 

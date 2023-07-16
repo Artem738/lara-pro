@@ -9,12 +9,15 @@ Content-Type: application/json
     "name": "Updated Book {{$random.alphabetic(5)}} {{$randomInt}}",
     "year": {{$random.integer(1970,2023)}},
     "lang": "ua",
-    "pages": "{{$random.integer(1, 55000)}}"
+    "pages": "{{$random.integer(1, 55000)}}",
+    "categoryId": 1
 }
 
 ###
 
 #{
+# "categoryId": {{$random.integer(1, 3)}}
+#
 # $languages = ['en', 'ua', 'pl', 'de'];
 #    "login": "{{$random.alphabetic(10)}}",
 #    "password": "{{$random.alphanumeric(8)}}",

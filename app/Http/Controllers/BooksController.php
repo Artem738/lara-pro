@@ -71,6 +71,7 @@ class BooksController extends Controller
     }
 
     /* UPDATE DONE */
+
     public function update(BookUpdateRequest $request)
     {
         $validatedData = $request->validated();
@@ -83,6 +84,7 @@ class BooksController extends Controller
             $validatedData['year'],
             LangEnum::from($validatedData['lang']),
             $validatedData['pages'],
+            $validatedData['categoryId'],
             $bookIterator->getCreatedAt(),
             now(),
         );

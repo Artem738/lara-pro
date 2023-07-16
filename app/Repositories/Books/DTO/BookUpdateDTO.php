@@ -8,14 +8,23 @@ use Carbon\Carbon;
 class BookUpdateDTO
 {
     public function __construct(
-        protected int    $id,
-        protected string $name,
-        protected int    $year,
+        protected int      $id,
+        protected string   $name,
+        protected int      $year,
         protected LangEnum $lang,
-        protected int    $pages,
-        protected Carbon $created_at,
-        protected Carbon $updated_at,
+        protected int      $pages,
+        protected int      $categoryId,
+        protected Carbon   $created_at,
+        protected Carbon   $updated_at,
     ) {
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId(): int
+    {
+        return $this->categoryId;
     }
 
     public function getId(): int

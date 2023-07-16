@@ -30,6 +30,7 @@ class BookUpdateRequest extends FormRequest
             'year' => ['required', 'integer', 'min:1970', 'max:' . $currentYear],
             'lang' => ['required', 'string', Rule::in(array_column(LangEnum::cases(), 'value'))],
             'pages' => ['required', 'integer', 'min:10', 'max:55000'],
+            'categoryId' => ['required', 'integer', Rule::exists('categories', 'id')],
         ];
     }
 

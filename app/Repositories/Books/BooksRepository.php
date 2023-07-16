@@ -82,6 +82,7 @@ class BooksRepository
                     'year' => $bookUpdateDTO->getYear(),
                     'lang' => $bookUpdateDTO->getLang(),
                     'pages' => $bookUpdateDTO->getPages(),
+                    'category_id' => $bookUpdateDTO->getCategoryId(),
                     'updated_at' => $bookUpdateDTO->getUpdatedAt(),
                 ]
             );

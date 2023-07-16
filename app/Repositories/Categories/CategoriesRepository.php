@@ -61,7 +61,7 @@ class CategoriesRepository
 
     public function deleteBook($id): bool
     {
-        $deleted = DB::table('books')->delete($id);
+        $deleted = DB::table('categories')->delete($id);
         return $deleted > 0;
     }
 

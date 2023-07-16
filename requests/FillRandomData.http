@@ -1,0 +1,32 @@
+###  request with disabled redirects
+# @no-redirect
+POST http://lara-pro.loc/api/categories/
+Content-Type: application/json
+
+{
+    "name": "history"
+}
+
+
+###
+
+###  request with disabled redirects
+# @no-redirect
+POST http://lara-pro.loc/api/categories/
+Content-Type: application/json
+
+{
+    "name": "fiction"
+}
+###
+###  request with disabled redirects
+# @no-redirect
+POST http://lara-pro.loc/api/categories/
+Content-Type: application/json
+
+{
+    "name": "fantasy"
+}
+
+
+###

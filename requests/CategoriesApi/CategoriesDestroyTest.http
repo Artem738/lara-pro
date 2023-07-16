@@ -1,6 +1,7 @@
 ### DELETE request with disabled redirects
 # @no-redirect
-DELETE http://lara-pro.loc/api/categories/9
+DELETE http://lara-pro.loc/api/categories/5
+
 
 
 ###

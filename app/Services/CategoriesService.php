@@ -44,7 +44,7 @@ class CategoriesService
         return $this->categoriesRepository->getCategoryById($bookUpdateDTO->getId());
     }
 
-    public function deleteBook($id): bool
+    public function deleteCategory($id): bool
     {
         return $this->categoriesRepository->deleteBook($id);
     }

@@ -33,7 +33,7 @@ class CategoriesController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         $valid = $request->validated();
-        echo ($valid['name']);
+        echo($valid['name']);
         $catDTO = new CategoryStoreDTO(
             $valid['name'],
             Carbon::now(),
@@ -67,8 +67,12 @@ class CategoriesController extends Controller
     /**
      *
      */
-    public function destroy(string $id)
+    public function destroy(CategoryCheckIdRequest $request)
     {
-        //
+        $valid = $request->validated();
+        if ($this->categoriesService->deleteCategory($valid['id'])) {
+            return response()->json(['message' => 'Book id - ' . $valid['id'] . ' deleted successfully']);
+        }
+        return response()->json(['message' => 'Book id - ' . $valid['id'] . ' delete failure or no category.'], 422); //422 - Unprocessable Entity
     }
 }

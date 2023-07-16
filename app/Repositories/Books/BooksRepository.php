@@ -7,6 +7,7 @@ use App\Repositories\Books\DTO\BookStoreDTO;
 use App\Repositories\Books\DTO\BookUpdateDTO;
 use App\Repositories\Books\Iterators\BookIterator;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -92,12 +93,13 @@ class BooksRepository
 
     public function deleteBook($id): bool
     {
-        $deleted = DB::table('books')->delete($id);
+        $deleted = DB::table('books')->where('id', $id)->delete();
         return $deleted > 0;
     }
 
     public function getBookById(int $id): BookIterator
     {
+
         $bookData = DB::table('books')
             ->where('books.id', '=', $id)
             ->select(
@@ -116,7 +118,9 @@ class BooksRepository
                 ->join('categories', 'categories.id', '=', 'books.category_id')
                 ->get()
             ->first();
+        if ($bookData === null) {
+            throw new Exception('Book not found');
+        }
         return new BookIterator($bookData);
     }
-
 }

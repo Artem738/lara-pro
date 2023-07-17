@@ -14,13 +14,10 @@ class BookIterator
     protected string $lang;
     protected int $pages;
     protected CategoryIterator $category;
-    protected Carbon $updated_at;
-    protected Carbon $created_at;
+    protected Carbon $updatedAt;
+    protected Carbon $createdAt;
 
 
-    /**
-     * @param string $name
-     */
     public function __construct(object $data)
     {
         $this->id = $data->id;
@@ -31,12 +28,11 @@ class BookIterator
         $this->category = new CategoryIterator((object) [
             'id' => $data->category_id,
             'name' => $data->category_name,
-            'created_at' => $data->category_created_at,
+            'created_at' => $data->category_created_at, // created_at бо ми створюємо!
             'updated_at' => $data->category_updated_at,
-
         ]);
-        $this->created_at = new Carbon($data->created_at); // ->toDateTimeString(); /// = Carbon::parse($data->created_at);
-        $this->updated_at = new Carbon($data->updated_at); //->toDateTimeString(); //Carbon::parse($data->updated_at);
+        $this->createdAt = new Carbon($data->created_at); // ->toDateTimeString(); /// = Carbon::parse($data->created_at);
+        $this->updatedAt = new Carbon($data->updated_at); //->toDateTimeString(); //Carbon::parse($data->updated_at);
     }
 
     /**
@@ -92,7 +88,7 @@ class BookIterator
      */
     public function getUpdatedAt(): Carbon
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
@@ -100,7 +96,7 @@ class BookIterator
      */
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
 

@@ -8,15 +8,15 @@ class CategoryIterator
 {
     protected int $id;
     protected string $name;
-    protected Carbon $updated_at;
-    protected Carbon $created_at;
+    protected Carbon $updatedAt;
+    protected Carbon $createdAt;
 
     public function __construct(object $data)
     {
         $this->id = $data->id;
         $this->name = $data->name;
-        $this->created_at = new Carbon($data->created_at);
-        $this->updated_at = Carbon::parse($data->updated_at);
+        $this->createdAt = Carbon::parse($data->created_at);
+        $this->updatedAt = Carbon::parse($data->updated_at);
 //        $this->created_at = new Carbon($data->created_at);
 //        $this->updated_at = new Carbon($data->updated_at); //->toDateTimeString(); //Carbon::parse($data->updated_at);
     }
@@ -26,7 +26,7 @@ class CategoryIterator
      */
     public function getUpdatedAt(): Carbon
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
@@ -34,7 +34,7 @@ class CategoryIterator
      */
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**

@@ -10,8 +10,8 @@ class CategoryUpdateDTO
     public function __construct(
         protected int $id,
         protected string $name,
-        protected Carbon $created_at,
-        protected Carbon $updated_at,
+        protected Carbon $createdAt,
+        protected Carbon $updatedAt,
     ) {
     }
 
@@ -36,7 +36,7 @@ class CategoryUpdateDTO
      */
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
@@ -44,7 +44,7 @@ class CategoryUpdateDTO
      */
     public function getUpdatedAt(): Carbon
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
 

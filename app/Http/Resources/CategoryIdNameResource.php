@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Repositories\Categories\Iterators\CategoryIterator;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class CategoryIdNameResource extends JsonResource
 {
     /**
      * Transform into array.
@@ -19,8 +19,6 @@ class CategoryResource extends JsonResource
         return [
             'id' => $res->getId(),
             'name' => $res->getName(),
-            'createdAt' => $res->getCreatedAt(),
-            'updatedAt' => $res->getUpdatedAt(),
         ];
 
     }

@@ -8,10 +8,9 @@ use App\Http\Requests\Category\CategoryUpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Repositories\Categories\DTO\CategoryStoreDTO;
 use App\Repositories\Categories\DTO\CategoryUpdateDTO;
-use App\Services\BooksService;
 use App\Services\CategoriesService;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+
 
 class CategoriesController extends Controller
 {
@@ -20,18 +19,12 @@ class CategoriesController extends Controller
     ) {
     }
 
-    /**
-     * Index DONE
-     */
     public function index()
     {
         $data = $this->categoriesService->getAllCategories();
         return response(CategoryResource::collection($data), 200);
     }
 
-    /**
-     *
-     */
     public function store(CategoryStoreRequest $request)
     {
         $valid = $request->validated();
@@ -74,8 +67,11 @@ class CategoriesController extends Controller
     {
         $valid = $request->validated();
         if ($this->categoriesService->deleteCategory($valid['id'])) {
-            return response()->json(['message' => 'Book id - ' . $valid['id'] . ' deleted successfully']);
+            return response()->json(['message' => 'Category id - ' . $valid['id'] . ' deleted successfully']);
         }
-        return response()->json(['message' => 'Book id - ' . $valid['id'] . ' delete failure or no category.'], 422); //422 - Unprocessable Entity
+        return response()->json(
+            ['message' => 'Category id - ' . $valid['id'] . ' delete failure or no category.'],
+            422,
+        ); //422 - Unprocessable Entity
     }
 }

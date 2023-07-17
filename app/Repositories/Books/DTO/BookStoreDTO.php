@@ -13,8 +13,8 @@ class BookStoreDTO
         protected LangEnum $lang,
         protected int      $pages,
         protected int      $categoryId,
-        protected Carbon   $created_at,
-        protected Carbon   $updated_at,
+        protected Carbon   $createdAt,
+        protected Carbon   $updatedAt,
     ) {
     }
 
@@ -48,12 +48,12 @@ class BookStoreDTO
 
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): Carbon
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
 

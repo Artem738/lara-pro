@@ -9,8 +9,8 @@ class CategoryStoreDTO
 {
     public function __construct(
         protected string $name,
-        protected Carbon $created_at,
-        protected Carbon $updated_at,
+        protected Carbon $createdAt,
+        protected Carbon $updatedAt,
     ) {
     }
 
@@ -27,7 +27,7 @@ class CategoryStoreDTO
      */
     public function getCreatedAt(): Carbon
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**
@@ -35,7 +35,7 @@ class CategoryStoreDTO
      */
     public function getUpdatedAt(): Carbon
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
 

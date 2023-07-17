@@ -17,7 +17,7 @@ class BookResource extends JsonResource
             'pages' => $res->getPages(),
             //'category' => new CategoryResource($res->getCategory()), //Switch Manual
             'category' => new CategoryIdNameResource($res->getCategory()),
-            'createdAt' => $res->getCreatedAt(), // ПЕРЕДЕЛАТЬ В КАМЄЛ КЕЙС
+            'createdAt' => $res->getCreatedAt(),
             'updatedAt' => $res->getUpdatedAt(),
         ];
     }

@@ -31,13 +31,12 @@ class BookIterator
         $this->category = new CategoryIterator((object) [
             'id' => $data->category_id,
             'name' => $data->category_name,
+            'created_at' => $data->category_created_at,
+            'updated_at' => $data->category_updated_at,
+
         ]);
         $this->created_at = new Carbon($data->created_at); // ->toDateTimeString(); /// = Carbon::parse($data->created_at);
         $this->updated_at = new Carbon($data->updated_at); //->toDateTimeString(); //Carbon::parse($data->updated_at);
-
-//        echo "Data received in BookIterator constructor: ";
-//        var_dump($data);
-//        exit();
     }
 
     /**

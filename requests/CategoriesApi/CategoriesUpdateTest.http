@@ -1,0 +1,16 @@
+### Send PUT request with dynamic variables in request's body
+
+### Send PUT request with json body
+
+PUT http://lara-pro.loc/api/categories/1
+Content-Type: application/json
+
+{
+    "name": "history"
+}
+
+###
+
+#   "name": "CatUpdated {{$random.alphabetic(2)}} {{$randomInt}}"
+#
+#

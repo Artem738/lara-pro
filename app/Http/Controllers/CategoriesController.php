@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\CategoryCheckIdRequest;
 use App\Http\Requests\Category\CategoryStoreRequest;
+use App\Http\Requests\Category\CategoryUpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Repositories\Categories\DTO\CategoryStoreDTO;
+use App\Repositories\Categories\DTO\CategoryUpdateDTO;
 use App\Services\BooksService;
 use App\Services\CategoriesService;
 use Carbon\Carbon;
@@ -33,7 +35,6 @@ class CategoriesController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         $valid = $request->validated();
-        echo($valid['name']);
         $catDTO = new CategoryStoreDTO(
             $valid['name'],
             Carbon::now(),
@@ -45,9 +46,6 @@ class CategoriesController extends Controller
         return response($catResource, 201);  //201 - request was successful and as a result, a resource has been created.
     }
 
-    /**
-     *
-     */
     public function show(CategoryCheckIdRequest $request)
     {
         $valid = $request->validated();
@@ -56,17 +54,22 @@ class CategoriesController extends Controller
         return response($catResource, 200);
     }
 
-    /**
-     *
-     */
-    public function update(Request $request, string $id)
+
+    public function update(CategoryUpdateRequest $request)
     {
-        //
+        $valid = $request->validated();
+        $catData = $this->categoriesService->getCategoryById($valid['id']);
+        $catUpdateDTO = new CategoryUpdateDTO(
+            $valid['id'],
+            $valid['name'],
+            $catData->getCreatedAt(),
+            Carbon::now(),
+        );
+        $catIterator = $this->categoriesService->updateCategory($catUpdateDTO);
+        return response(new CategoryResource($catIterator), 200);
     }
 
-    /**
-     *
-     */
+
     public function destroy(CategoryCheckIdRequest $request)
     {
         $valid = $request->validated();

@@ -7,6 +7,7 @@ use App\Repositories\Books\DTO\BookStoreDTO;
 use App\Repositories\Books\DTO\BookUpdateDTO;
 use App\Repositories\Books\Iterators\BookIterator;
 use App\Repositories\Categories\DTO\CategoryStoreDTO;
+use App\Repositories\Categories\DTO\CategoryUpdateDTO;
 use App\Repositories\Categories\Iterators\CategoryIterator;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -41,18 +42,14 @@ class CategoriesRepository
         return $catId;
     }
 
-    public function updateBook(BookUpdateDTO $bookUpdateDTO): bool
+    public function updateCategory(CategoryUpdateDTO $catUpdateDTO): bool
     {
-        $updateStatus = DB::table('books')
-            ->where('id', $bookUpdateDTO->getId())
+        $updateStatus = DB::table('categories')
+            ->where('id', $catUpdateDTO->getId())
             ->update(
                 [
-                    'name' => $bookUpdateDTO->getName(),
-                    'year' => $bookUpdateDTO->getYear(),
-                    'lang' => $bookUpdateDTO->getLang(),
-                    'pages' => $bookUpdateDTO->getPages(),
-                    'category_id' => $bookUpdateDTO->getCategoryId(),
-                    'updated_at' => $bookUpdateDTO->getUpdatedAt(),
+                    'name' => $catUpdateDTO->getName(),
+                    'updated_at' => $catUpdateDTO->getUpdatedAt(),
                 ]
             );
 

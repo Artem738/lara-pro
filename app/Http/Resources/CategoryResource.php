@@ -19,7 +19,10 @@ class CategoryResource extends JsonResource
         return [
             'id' => $res->getId(),
             'name' => $res->getName(),
+            'created_at' => $res->getCreatedAt(),
+            'updated_at' => $res->getUpdatedAt(),
         ];
+
     }
 }
 

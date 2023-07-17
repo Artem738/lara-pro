@@ -41,6 +41,8 @@ class BooksRepository
                     'books.updated_at',
                     'category_id',
                     'categories.name as category_name',
+                    'categories.created_at as category_created_at',
+                    'categories.updated_at as category_updated_at',
                 ]
             )
                 ->join('categories', 'categories.id', '=', 'books.category_id')
@@ -113,6 +115,8 @@ class BooksRepository
                     'books.updated_at',
                     'category_id',
                     'categories.name as category_name',
+                    'categories.created_at as category_created_at',
+                    'categories.updated_at as category_updated_at',
                 ]
             )
                 ->join('categories', 'categories.id', '=', 'books.category_id')

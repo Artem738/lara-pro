@@ -35,13 +35,13 @@ class CategoriesService
         return  $this->categoriesRepository->getCategoryById($id);
     }
 
-    public function updateBook($bookUpdateDTO): CategoryIterator
+    public function updateCategory($categoryUpdateDTO): CategoryIterator
     {
-        $isUpdated = $this->categoriesRepository->updateBook($bookUpdateDTO);
+        $isUpdated = $this->categoriesRepository->updateCategory($categoryUpdateDTO);
         if ($isUpdated == null) {
-            throw new Exception('Failed to update book.');
+            throw new Exception('Failed to update category.');
         }
-        return $this->categoriesRepository->getCategoryById($bookUpdateDTO->getId());
+        return $this->categoriesRepository->getCategoryById($categoryUpdateDTO->getId());
     }
 
     public function deleteCategory($id): bool

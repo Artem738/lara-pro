@@ -8,3 +8,10 @@ Content-Type: application/json
 {
     "name": "Category {{$random.alphabetic(3)}} {{$randomInt}}"
 }
+
+
+###
+
+#   "name": "history"
+#    "name": "Category {{$random.alphabetic(3)}} {{$randomInt}}"
+#

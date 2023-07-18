@@ -28,5 +28,14 @@ class EnumTest extends Command
         //LangEnum::from($validatedData['lang']);
 
         // dd(LangEnum::cases().'name'). PHP_EOL;
+        $total = 100;
+        $this->output->progressStart($total);
+
+        for ($i = 1; $i <= $total; $i++) {
+            usleep(1000); //10 ms  // 1s = 1000000
+            $this->output->progressAdvance();
+        }
+
+        $this->output->progressFinish();
     }
 }

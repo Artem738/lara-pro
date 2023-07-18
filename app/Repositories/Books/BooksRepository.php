@@ -28,34 +28,26 @@ class BooksRepository
         if ($bookIndexDTO->getLang()) {
             $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
         }
-        $booksData = collect(
-            $query->
-            select(
-                [
-                    'books.id',
-                    'books.name',
-                    'books.year',
-                    'books.lang',
-                    'books.pages',
-                    'books.created_at',
-                    'books.updated_at',
-                    'category_id',
-                    'categories.name as category_name',
-                    'categories.created_at as category_created_at',
-                    'categories.updated_at as category_updated_at',
-                ]
-            )
-                ->join('categories', 'categories.id', '=', 'books.category_id')
-                ->get()
-        );
+        $booksData = $query
+            ->select([
+                         'books.id',
+                         'books.name',
+                         'books.year',
+                         'books.lang',
+                         'books.pages',
+                         'books.created_at',
+                         'books.updated_at',
+                         'category_id',
+                         'categories.name as category_name',
+                         'categories.created_at as category_created_at',
+                         'categories.updated_at as category_updated_at',
+                     ])
+            ->join('categories', 'categories.id', '=', 'books.category_id')
+            ->get();
 
-        $books = collect();
-
-        foreach ($booksData as $bookData) {
-            $bookIterator = new BookIterator($bookData);
-            $books->push($bookIterator);
-        }
-        return $books;
+        return $booksData->map(function ($bookData) {
+            return new BookIterator($bookData);
+        });
     }
 
     public function store(BookStoreDTO $bookStoreDTO): int

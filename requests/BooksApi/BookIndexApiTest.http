@@ -1,9 +1,10 @@
 ### GET request with environment variables
-GET http://lara-pro.loc/api/books/?startDate=1999-07-15&endDate=2023-07-20&year=1983&lang=ua
+GET http://lara-pro.loc/api/books/?startDate=1977-01-08&endDate=1983-01-09&year=1983&lang=ua
 Accept: application/json
 
 
 ###
+#  &lang=ua
 #GET http://lara-pro.loc/api/books/?startDate=1975-07-15&endDate=2023-07-20&year={{$random.integer(1970,2023)}}&lang=en
 #GET http://lara-pro.loc/api/books/?startDate=1999-07-15&endDate=2020-07-20&year=2000
 #GET http://lara-pro.loc/api/books/?startDate=1999-07-15&endDate=2020-07-20&year=2000&lang=ua

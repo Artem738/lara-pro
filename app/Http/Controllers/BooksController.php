@@ -26,13 +26,20 @@ class BooksController extends Controller
     /* INDEX DONE */
     public function index(BookIndexRequest $request)
     {
+
         $validatedData = $request->validated();
+        //die();
+        // $lang = LangEnum::from($validatedData['lang']);
+        $language = null;
+        if (isset ($validatedData['lang'])) {
+            $language = LangEnum::from($validatedData['lang']);
+        }
 
         $bookIndexDTO = new BookIndexDTO(
             new Carbon($validatedData['startDate']),
             new Carbon($validatedData['endDate']),
             $validatedData['year'] ?? null,
-            LangEnum::from($validatedData['lang']) ?? null,
+            $language,
         );
 
         $books = $this->booksService->getBooksForIndex($bookIndexDTO);

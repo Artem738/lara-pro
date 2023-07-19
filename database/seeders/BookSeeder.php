@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class BookSeeder extends Seeder
 {
-    private int $batchPacksToInsert = 500; // Кількість вставок в базу
+    private int $batchPacksToInsert = 5; // Кількість вставок в базу - 500
     private int $batchSize = 2000; // Розмір пакету пакета вставки
     protected int $duplicatedEntryCount = 0;
     protected int $currentId;

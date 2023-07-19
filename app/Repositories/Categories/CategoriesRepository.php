@@ -2,14 +2,9 @@
 
 namespace App\Repositories\Categories;
 
-use App\Repositories\Books\DTO\BookIndexDTO;
-use App\Repositories\Books\DTO\BookStoreDTO;
-use App\Repositories\Books\DTO\BookUpdateDTO;
-use App\Repositories\Books\Iterators\BookIterator;
 use App\Repositories\Categories\DTO\CategoryStoreDTO;
 use App\Repositories\Categories\DTO\CategoryUpdateDTO;
 use App\Repositories\Categories\Iterators\CategoryIterator;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +12,9 @@ class CategoriesRepository
 {
     public function getAllCategories(): Collection // of iterators
     {
-        $categoriesData = DB::table('categories')->get();
+        $categoriesData = DB::table('categories')
+            ->limit(1000)
+            ->get();
 
         $categories = collect();
 

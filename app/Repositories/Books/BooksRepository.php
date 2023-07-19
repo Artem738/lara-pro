@@ -43,6 +43,8 @@ class BooksRepository
                          'categories.updated_at as category_updated_at',
                      ])
             ->join('categories', 'categories.id', '=', 'books.category_id')
+            ->orderBy('books.id', 'desc' )
+            ->limit(20)
             ->get();
 
         return $booksData->map(function ($bookData) {

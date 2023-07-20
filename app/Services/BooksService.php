@@ -18,13 +18,17 @@ class BooksService
 
     public function getBooksForIndex(BookIndexDTO $bookIndexDTO): Collection
     {
-        return  $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
+//        return  $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
+//        $maxId = $collection->max('id');
+
+        $book = $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
+        return $book;
     }
 
     public function getBookById($id): BookIterator
     {
 
-        return  $this->booksRepository->getBookById($id);
+        return $this->booksRepository->getBookById($id);
     }
 
     public function store(BookStoreDTO $bookDTO): BookIterator

@@ -15,6 +15,8 @@ class BooksRepository
 {
     public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection //of iterators
     {
+       // echo($bookIndexDTO->getLastId()); die();
+
         $query = DB::table('books')
             ->whereBetween(
                 'books.created_at', [
@@ -28,6 +30,8 @@ class BooksRepository
         if ($bookIndexDTO->getLang()) {
             $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
         }
+
+
         $booksData = $query
             ->select([
                          'books.id',
@@ -43,8 +47,9 @@ class BooksRepository
                          'categories.updated_at as category_updated_at',
                      ])
             ->join('categories', 'categories.id', '=', 'books.category_id')
-            ->orderBy('books.id', 'desc' )
-            ->limit(20)
+            //->orderBy('books.id', 'desc' )
+            ->limit($bookIndexDTO->getLimit())
+            ->where('books.id', '>', $bookIndexDTO->getLastId())
             ->get();
 
         return $booksData->map(function ($bookData) {

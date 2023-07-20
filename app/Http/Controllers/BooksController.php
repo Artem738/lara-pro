@@ -30,21 +30,40 @@ class BooksController extends Controller
         $validatedData = $request->validated();
         //die();
         // $lang = LangEnum::from($validatedData['lang']);
-        $language = null;
+        $languageFromEnum = null;
         if (isset ($validatedData['lang'])) {
-            $language = LangEnum::from($validatedData['lang']);
+            $languageFromEnum = LangEnum::from($validatedData['lang']);
         }
 
         $bookIndexDTO = new BookIndexDTO(
             new Carbon($validatedData['startDate']),
             new Carbon($validatedData['endDate']),
             $validatedData['year'] ?? null,
-            $language,
+            $languageFromEnum,
+            $validatedData['lastId'] ?? 0,
+            $validatedData['limit'] ?? 20
         );
-
+        $startId = $bookIndexDTO->getLastId();
         $books = $this->booksService->getBooksForIndex($bookIndexDTO);
+        $resource = BookResource::collection($books);
 
-        return response(BookResource::collection($books), 200);
+
+        $lastId = 0;
+        if (!$books->isEmpty()) {
+            $lastId = $books->last()->getId();
+        }
+
+        return response()->json(
+            [
+                'data' => $resource,
+                'meta' => [
+                    'startId' => $startId,
+                    'lastId' => $lastId,
+                    'limit' => $bookIndexDTO->getLimit(),
+                    'totalCount' => $books->count(),
+                ],
+            ], 200
+        );
     }
 
     /* STORE DONE */

@@ -14,6 +14,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 class BookSeeder extends Seeder
 {
     private bool $useHandleAllEntryErrorsFunction = false;
+    private bool $hardBarWithTimeEnabled = false;
+
     protected int $booksBatchPacksToInsert = 100; // Можна так
     protected int $booksBatchSize = 500;
     protected int $currentId;
@@ -69,18 +71,26 @@ class BookSeeder extends Seeder
                 DB::table('books')->insert($booksPack);
             }
 
-            // BAR - лютий код ))
-            $processedItems = ($i - 1) * $this->booksBatchSize + $j;
-            $totalItems = $this->booksBatchPacksToInsert * $this->booksBatchSize;
-            $elapsedTimeInSeconds = time() - $startTime;
-            $remainingTimeInSeconds = ($elapsedTimeInSeconds / $processedItems) * ($totalItems - $processedItems);
-            $remainingTimeFormatted = gmdate("H:i:s", $remainingTimeInSeconds);
-            $progressBar->setMessage($this->currentId, 'currentId'); //Можна так передавати
-            $progressBar->setMessage($remainingTimeFormatted, 'remainingTime');
-            $progressBar->setFormat(
-                "   Inserted:" . ($this->currentId - $startId) . " Remaining:" . ($totalItems - $processedItems + 1) . // а можно і так прямо у форматі робити...
-                ", Batch-%current% [%bar%] %percent:3s%% Current max ID %currentId% Elapsed: %elapsed:5s% Remain:%remainingTime:6s%"
-            );
+
+            if ($this->hardBarWithTimeEnabled) {
+                // BAR - лютий код ))
+                $processedItems = ($i - 1) * $this->booksBatchSize + $j;
+                $totalItems = $this->booksBatchPacksToInsert * $this->booksBatchSize;
+                $elapsedTimeInSeconds = time() - $startTime;
+                $remainingTimeInSeconds = ($elapsedTimeInSeconds / $processedItems) * ($totalItems - $processedItems);
+                $remainingTimeFormatted = gmdate("H:i:s", $remainingTimeInSeconds);
+                $progressBar->setMessage($this->currentId, 'currentId'); //Можна так передавати
+                $progressBar->setMessage($remainingTimeFormatted, 'remainingTime');
+                $progressBar->setFormat(
+                    "   Inserted:" . ($this->currentId - $startId) . " Remaining:" . ($totalItems - $processedItems + 1) . // а можно і так прямо у форматі робити...
+                    ", Batch-%current% [%bar%] %percent:3s%% Current max ID %currentId% Elapsed: %elapsed:5s% Remain:%remainingTime:6s%"
+                );
+            } else {
+                $progressBar->setFormat(
+                    "   Current Id:" . ($this->currentId) .
+                    ", Batch-%current% [%bar%] %percent:3s%% %elapsed:5s%"
+                );
+            }
             $progressBar->advance(); // BAR
 
         }

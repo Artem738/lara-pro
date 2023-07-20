@@ -10,16 +10,15 @@ use Faker\Factory as Faker;
 
 class CategorySeeder extends Seeder
 {
-    private int $categoriesNumberToInsert = 250;
+    private int $categoriesNumberToInsert;
     protected int $currentId;
     protected int $duplicatedEntryCount = 0;
 
     public function __construct()
     {
+        $this->categoriesNumberToInsert = DatabaseSeeder::$categoriesNumberToInsert ?? 10;
         $this->currentId = DB::table('categories')->max('id') + 1 ?? 1;
-
     }
-
 
 
     public function run(): void
@@ -46,7 +45,7 @@ class CategorySeeder extends Seeder
         $now = now();
 
         foreach ($genres as $id => $category) {
-            $e = null;
+            $isException = false;
             try {
                 DB::table('categories')->insert(
                     [
@@ -56,62 +55,37 @@ class CategorySeeder extends Seeder
                         'updated_at' => $now,
                     ]
                 );
-            } catch (QueryException $e) {
-                $this->handleAllEntryErrors($category, $e);
+            } catch (QueryException $exception) {
+                $this->duplicatedEntryCount++;
+                $isException = true;
+                DatabaseSeeder::handleAllEntryErrors($exception);
             }
-            if (!$e) {
+
+            if (!$isException) {
                 $this->currentId++;
             }
-        }
 
-        $faker = Faker::create();
-        for ($i = 1; $i <= $this->categoriesNumberToInsert; $i++) {
-            $e = null;
-            $name = ucfirst($faker->word()) . $faker->randomLetter();
-            try {
-                DB::table('categories')->insert(
-                    [
-                        'id' => $this->currentId,
-                        'name' => $name,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ]
-                );
-            } catch (QueryException $e) {
-                $this->handleAllEntryErrors($name, $e);
-            }
-            if (!$e) {
-                $this->currentId++;
-            }
-        }
-    }
-
-    private function handleAllEntryErrors(string $category, QueryException $exception): void
-    {
-        $errorPatterns = [
-            'categories.PRIMARY' => 'Primary key ID error',
-            'categories.categories_name_unique' => 'Duplicate entry',
-        ];
-
-        $errorMessage = $exception->getMessage();
-        $errorMessageKey = '';
-
-        foreach ($errorPatterns as $key => $pattern) {
-            if (str_contains($errorMessage, $key)) {
-                $errorMessageKey = $pattern;
-                break;
+            $faker = Faker::create();
+            for ($i = 1; $i <= $this->categoriesNumberToInsert; $i++) {
+                $e = null;
+                $name = ucfirst($faker->word()) . $faker->randomLetter();
+                try {
+                    DB::table('categories')->insert(
+                        [
+                            'id' => $this->currentId,
+                            'name' => $name,
+                            'created_at' => $now,
+                            'updated_at' => $now,
+                        ]
+                    );
+                } catch (QueryException $e) {
+                   // DatabaseSeeder::handleAllEntryErrors($e);
+                }
+                if (!$e) {
+                    $this->currentId++;
+                }
             }
         }
 
-        $message = '';
-        if ($errorMessageKey !== '') {
-            $message .= '   ' . $this->duplicatedEntryCount . ' - ' . $category . ' - ' . $errorMessageKey . ': ' . $key;
-        } else {
-            $message .= $exception->getMessage();
-        }
-
-        $this->command->getOutput()->writeln($message); //caution, alert, error, warning, writeln, info
-
-        $this->duplicatedEntryCount++;
     }
 }

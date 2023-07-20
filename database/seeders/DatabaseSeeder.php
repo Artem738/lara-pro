@@ -2,22 +2,58 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
-use Database\Seeders\CategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    public static int $categoriesNumberToInsert = 5; // CATEGORIES  !!
+    public static int $booksBatchPacksToInsert = 100;
+    public static int $booksBatchSize = 500;
+
+//    public function __construct()
+//    {
+//        config(['seeder.booksBatchPacksToInsert' => $this->booksBatchPacksToInsert]);
+//            use
+//        $this->booksBatchPacksToInsert = config('seeder.booksBatchPacksToInsert', 50);
+//    }
+
     public function run(): void
     {
+//        $this->call(CategorySeeder::class);
+//        $this->call(BookSeeder::class);
         $this->call(
             [
                 CategorySeeder::class,
                 BookSeeder::class,
-
             ]
         );
+    }
+
+    public static function handleAllEntryErrors(QueryException $exception): void
+    {
+        $errorPatterns = [
+            'categories.PRIMARY' => 'Primary key ID error',
+            'categories.categories_name_unique' => 'Duplicate entry',
+        ];
+
+        $errorMessage = $exception->getMessage();
+        $errorMessageKey = '';
+
+        foreach ($errorPatterns as $key => $pattern) {
+            if (str_contains($errorMessage, $key)) {
+                $errorMessageKey = $pattern;
+                break;
+            }
+        }
+
+        $message = '';
+        if ($errorMessageKey !== '') {
+            $message .= ' - ' . $errorMessageKey . ': ' . $key;
+        } else {
+            $message .= $exception->getMessage();
+        }
+
+        echo ($message) . PHP_EOL;
     }
 }

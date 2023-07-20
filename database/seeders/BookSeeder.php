@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class BookSeeder extends Seeder
 {
+    //Testing Pool Request
     private bool $useHandleAllEntryErrorsFunction = false;
     private bool $hardBarWithTimeEnabled = false;
 

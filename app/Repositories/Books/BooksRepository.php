@@ -15,46 +15,55 @@ class BooksRepository
 {
     public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection //of iterators
     {
-       // echo($bookIndexDTO->getLastId()); die();
+        // echo($bookIndexDTO->getLastId()); die();
 
         $booksData = DB::table('books')
-            ->where(function ($query) use ($bookIndexDTO) {
-                $query->whereBetween('books.created_at', [
-                    Carbon::parse($bookIndexDTO->getStartDate()),
-                    Carbon::parse($bookIndexDTO->getEndDate())
-                ]);
+            ->where(
+                function ($query) use ($bookIndexDTO) {
+                    $query->whereBetween(
+                        'books.created_at', [
+                                              Carbon::parse($bookIndexDTO->getStartDate()),
+                                              Carbon::parse($bookIndexDTO->getEndDate())
+                                          ]
+                    );
 
-                if ($bookIndexDTO->getYear()) {
-                    $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
-                }
+                    if ($bookIndexDTO->getYear()) {
+                        $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
+                    }
 
-                if ($bookIndexDTO->getLang()) {
-                    $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
+                    if ($bookIndexDTO->getLang()) {
+                        $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
+                    }
                 }
-            })
+            )
             ->where('books.id', '>=', $bookIndexDTO->getLastId())
             ->join('categories', 'categories.id', '=', 'books.category_id')
-            ->select([
-                         'books.id',
-                         'books.name',
-                         'books.year',
-                         'books.lang',
-                         'books.pages',
-                         'books.created_at',
-                         'books.updated_at',
-                         'category_id',
-                         'categories.name as category_name',
-                         'categories.created_at as category_created_at',
-                         'categories.updated_at as category_updated_at',
-                     ])
-            //->orderBy('books.id', 'desc')
+            ->select(
+                [
+                    'books.id',
+                    'books.name',
+                    'books.year',
+                    'books.lang',
+                    'books.pages',
+                    'books.created_at',
+                    'books.updated_at',
+                    'category_id',
+                    'categories.name as category_name',
+                    'categories.created_at as category_created_at',
+                    'categories.updated_at as category_updated_at',
+                ]
+            )
+
             ->limit($bookIndexDTO->getLimit())
             ->get();
 
-        return $booksData->map(function ($bookData) {
-            return new BookIterator($bookData);
-        });
+        return $booksData->map(
+            function ($bookData) {
+                return new BookIterator($bookData);
+            }
+        );
     }
+
 
     public function store(BookStoreDTO $bookStoreDTO): int
     {
@@ -117,8 +126,8 @@ class BooksRepository
                     'categories.updated_at as category_updated_at',
                 ]
             )
-                ->join('categories', 'categories.id', '=', 'books.category_id')
-                ->get()
+            ->join('categories', 'categories.id', '=', 'books.category_id')
+            ->get()
             ->first();
         if ($bookData === null) {
             throw new Exception('Book not found');

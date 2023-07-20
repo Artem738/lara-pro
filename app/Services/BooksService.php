@@ -18,9 +18,6 @@ class BooksService
 
     public function getBooksForIndex(BookIndexDTO $bookIndexDTO): Collection
     {
-//        return  $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
-//        $maxId = $collection->max('id');
-
         $book = $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);
         return $book;
     }

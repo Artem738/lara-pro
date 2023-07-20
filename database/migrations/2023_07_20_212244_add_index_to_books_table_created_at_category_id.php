@@ -24,7 +24,7 @@ return new class extends Migration {
     {
         Schema::table(
             'books', function (Blueprint $table) {
-            //
+            $table->dropIndex(['created_at', 'category_id']);
         }
         );
     }

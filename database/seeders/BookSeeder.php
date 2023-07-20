@@ -61,8 +61,8 @@ class BookSeeder extends Seeder
             if ($this->useHandleAllEntryErrorsFunction) {
                 try {
                     DB::table('books')->insert($booksPack);
-                } catch (QueryException $e) {
-                    DatabaseSeeder::handleAllEntryErrors($e);
+                } catch (QueryException $exception) {
+                    DatabaseSeeder::handleAllEntryErrors($exception);
                 }
             } else {
                 //По замовченню не відловлюємо помилки спеціальним методом handleAllEntryErrors()
@@ -78,7 +78,7 @@ class BookSeeder extends Seeder
             $progressBar->setMessage($this->currentId, 'currentId'); //Можна так передавати
             $progressBar->setMessage($remainingTimeFormatted, 'remainingTime');
             $progressBar->setFormat(
-                "   Inserted:" . ($this->currentId - $startId) . " Remaining:" . $totalItems - $processedItems. // а можно і так прямо у форматі робити...
+                "   Inserted:" . ($this->currentId - $startId) . " Remaining:" . ($totalItems - $processedItems + 1) . // а можно і так прямо у форматі робити...
                 ", Batch-%current% [%bar%] %percent:3s%% Current max ID %currentId% Elapsed: %elapsed:5s% Remain:%remainingTime:6s%"
             );
             $progressBar->advance(); // BAR

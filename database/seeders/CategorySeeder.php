@@ -20,7 +20,6 @@ class CategorySeeder extends Seeder
         $this->currentId = DB::table('categories')->max('id') + 1 ?? 1;
     }
 
-
     public function run(): void
     {
         $genres = array(
@@ -49,7 +48,7 @@ class CategorySeeder extends Seeder
             try {
                 DB::table('categories')->insert(
                     [
-                        'id' => $this->currentId,
+                        'id' => $id,
                         'name' => $category,
                         'created_at' => $now,
                         'updated_at' => $now,
@@ -60,32 +59,36 @@ class CategorySeeder extends Seeder
                 $isException = true;
                 DatabaseSeeder::handleAllEntryErrors($exception);
             }
-
             if (!$isException) {
                 $this->currentId++;
             }
-
-            $faker = Faker::create();
-            for ($i = 1; $i <= $this->categoriesNumberToInsert; $i++) {
-                $e = null;
-                $name = ucfirst($faker->word()) . $faker->randomLetter();
-                try {
-                    DB::table('categories')->insert(
-                        [
-                            'id' => $this->currentId,
-                            'name' => $name,
-                            'created_at' => $now,
-                            'updated_at' => $now,
-                        ]
-                    );
-                } catch (QueryException $e) {
-                   // DatabaseSeeder::handleAllEntryErrors($e);
-                }
-                if (!$e) {
-                    $this->currentId++;
-                }
-            }
         }
 
+        $this->currentId = DB::table('categories')->max('id') + 1;
+
+        $faker = Faker::create();
+        for ($i = 0; $i < $this->categoriesNumberToInsert; $i++) {
+            $isException = null;
+            $name = ucfirst($faker->word()) . $faker->randomLetter();
+            try {
+                DB::table('categories')->insert(
+                    [
+                        'id' => $this->currentId,
+                        'name' => $name,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ]
+                );
+            } catch (QueryException $e) {
+                $this->duplicatedEntryCount++;
+                $isException = true;
+                DatabaseSeeder::handleAllEntryErrors($e);
+            }
+            if (!$isException) {
+                $this->currentId++;
+            }
+        }
     }
+
+
 }

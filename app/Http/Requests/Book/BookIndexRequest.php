@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Book;
 
 use App\Enum\LangEnum;
+use App\Enum\LimitEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rule;
@@ -18,8 +19,8 @@ class BookIndexRequest extends FormRequest
             'endDate' => ['required', 'date', 'after:startDate'],
             'year' => ['nullable','integer', 'min:1970', 'max:' . $currentYear],
             'lang' => ['nullable','string', Rule::in(array_column(LangEnum::cases(), 'value'))],
-            'lastId' => ['nullable', 'integer', Rule::in(array_column(LimitEnum::cases(), 'value'))],
-            'limit' => ['nullable', 'integer', 'in:10,20,50,100,200,500,1000'],
+            'lastId' => ['nullable', 'integer', 'exists:books,id'],
+            'limit' => ['nullable', 'integer', Rule::in(array_column(LimitEnum::cases(), 'value'))],
         ];
     }
 

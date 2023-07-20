@@ -17,22 +17,23 @@ class BooksRepository
     {
        // echo($bookIndexDTO->getLastId()); die();
 
-        $query = DB::table('books')
-            ->whereBetween(
-                'books.created_at', [
-                                      Carbon::parse($bookIndexDTO->getStartDate()),
-                                      Carbon::parse($bookIndexDTO->getEndDate())
-                                  ]
-            );
-        if ($bookIndexDTO->getYear()) {
-            $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
-        }
-        if ($bookIndexDTO->getLang()) {
-            $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
-        }
+        $booksData = DB::table('books')
+            ->where(function ($query) use ($bookIndexDTO) {
+                $query->whereBetween('books.created_at', [
+                    Carbon::parse($bookIndexDTO->getStartDate()),
+                    Carbon::parse($bookIndexDTO->getEndDate())
+                ]);
 
+                if ($bookIndexDTO->getYear()) {
+                    $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
+                }
 
-        $booksData = $query
+                if ($bookIndexDTO->getLang()) {
+                    $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
+                }
+            })
+            ->where('books.id', '>=', $bookIndexDTO->getLastId())
+            ->join('categories', 'categories.id', '=', 'books.category_id')
             ->select([
                          'books.id',
                          'books.name',
@@ -46,10 +47,8 @@ class BooksRepository
                          'categories.created_at as category_created_at',
                          'categories.updated_at as category_updated_at',
                      ])
-            ->join('categories', 'categories.id', '=', 'books.category_id')
-            //->orderBy('books.id', 'desc' )
+            //->orderBy('books.id', 'desc')
             ->limit($bookIndexDTO->getLimit())
-            ->where('books.id', '>', $bookIndexDTO->getLastId())
             ->get();
 
         return $booksData->map(function ($bookData) {

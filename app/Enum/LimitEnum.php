@@ -2,7 +2,8 @@
 
 namespace App\Enum;
 
-enum LimitEnum: int {
+enum LimitEnum: int
+{
     case LIMIT_10 = 10;
     case LIMIT_20 = 20;
     case LIMIT_50 = 50;

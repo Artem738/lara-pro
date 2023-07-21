@@ -9,26 +9,21 @@ use Illuminate\Support\Facades\DB;
 
 class ChunkTestCommand extends Command
 {
-
     protected $signature = 'chunktest';
-
-
     protected $description = 'Chunk TEST Command';
-
 
     public function handle()
     {
         $chunkNumberCount = 100;
+
         $totalInDb = DB::table('books')->where('lang', 'en')->count();
-
         $totalRoundedUp = ceil($totalInDb / $chunkNumberCount);
-
         $this->output->progressStart($totalRoundedUp);
 
         DB::table('books')
             ->where('lang', 'en')
             ->orderBy('id') // "You must specify an orderBy clause when using this function."
-                // використовуємо chunk замість chunkById, чи не використовуємо?
+            // використовуємо chunk замість chunkById, чи не використовуємо?
             ->chunk(
                 $chunkNumberCount, function ($books) {
                 foreach ($books as $book) {
@@ -41,8 +36,6 @@ class ChunkTestCommand extends Command
                 $this->output->progressAdvance();
             }
             );
-
-
         $this->output->progressFinish();
     }
 }

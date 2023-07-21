@@ -53,7 +53,15 @@ class BooksRepository
                     'categories.updated_at as category_updated_at',
                 ]
             )
+            //->orderBy('books.id', 'desc')
+            //->inRandomOrder('books.name')  // Time: 5564ms -При 1.5М
+            //->inRandomOrder('year')  //  5101ms  -При 1.5М
+           // ->orderBy('books.year') //Time: 41144ms (41 s 144 ms);
+           // ->orderBy('books.name') // Time: 43180ms   -При 1.5М  нема різниці... майже...
+            //->inRandomOrder('books.id') // 5154ms  -При 1.5М
+            // у результаты
 
+            ->orderBy('name','asc')
             ->limit($bookIndexDTO->getLimit())
             ->get();
 

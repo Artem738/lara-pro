@@ -29,6 +29,7 @@ class ChunkTestCommand extends Command
         DB::table('books')
             ->where('lang', 'en')
             ->orderBy('id') // "You must specify an orderBy clause when using this function."
+                // використовуємо chunk замість chunkById, чи не використовуємо?
             ->chunk(
                 $chunkNumberCount, function ($books) {
                 foreach ($books as $book) {

@@ -54,6 +54,7 @@ class BooksController extends Controller
 
         $resource = BookResource::collection($books);
 
+        // Ну от як це у services переносити?
         $lastId = 0;
         if (!$books->isEmpty()) {
             $lastId = $books->last()->getId();

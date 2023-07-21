@@ -1,5 +1,5 @@
 ### GET request with environment variables
-GET http://lara-pro.loc/api/books/?startDate=2020-07-15&endDate=2020-07-16&lang=en&limit=1000
+GET http://lara-pro.loc/api/books/?startDate=2019-07-15&endDate=2021-07-16&limit=100&year=1991
 Accept: application/json
 
 

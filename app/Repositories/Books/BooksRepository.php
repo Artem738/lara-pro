@@ -25,6 +25,20 @@ class BooksRepository
         // echo($bookIndexDTO->getLastId()); die();
 
         $booksData = DB::table('books')
+            ->select(
+                'books.id',
+                'books.name',
+                'books.year',
+                'books.lang',
+                'books.pages',
+                'books.created_at',
+                'books.updated_at',
+                'category_id',
+                'categories.name as category_name',
+                'categories.created_at as category_created_at',
+                'categories.updated_at as category_updated_at'
+            )
+            ->join('categories', 'categories.id', '=', 'books.category_id')
             ->where(
                 function ($query) use ($bookIndexDTO) {
                     $query->whereBetween(
@@ -32,44 +46,12 @@ class BooksRepository
                                               Carbon::parse($bookIndexDTO->getStartDate()),
                                               Carbon::parse($bookIndexDTO->getEndDate())
                                           ]
-                    );
-
-                    if ($bookIndexDTO->getYear()) {
-                        $query->orWhereYear('books.created_at', $bookIndexDTO->getYear());
-                    }
-
-                    if ($bookIndexDTO->getLang()) {
-                        $query->orWhere('books.lang', $bookIndexDTO->getLang()->value);
-                    }
+                    )
+                        ->orWhere('books.year', '=', $bookIndexDTO->getYear())
+                        ->orWhere('books.lang', '=', $bookIndexDTO->getLang());
                 }
             )
-            ->where('books.id', '>=', $bookIndexDTO->getLastId())
-            ->join('categories', 'categories.id', '=', 'books.category_id')
-            ->select(
-                [
-                    'books.id',
-                    'books.name',
-                    'books.year',
-                    'books.lang',
-                    'books.pages',
-                    'books.created_at',
-                    'books.updated_at',
-                    'category_id',
-                    'categories.name as category_name',
-                    'categories.created_at as category_created_at',
-                    'categories.updated_at as category_updated_at',
-                ]
-            )
-            //->orderBy('books.id', 'desc')
-            //->inRandomOrder('books.name')  // Time: 5564ms -При 1.5М
-            //->inRandomOrder('year')  //  5101ms  -При 1.5М
-           // ->orderBy('books.year') //Time: 41144ms (41 s 144 ms); // - є індекс
-           // ->orderBy('books.name') // Time: 43180ms   -При 1.5М  нема індексу, незначна різниці...хз..
-            // ->orderBy('name','asc') // 39248ms -При 1.5М
-            //->inRandomOrder('books.id') // 5154ms  -При 1.5М
-            // Щось незначний результат, не до кінці зрозуміло... Напевно неправильний тест.
-
-
+            ->where('books.id', '>', $bookIndexDTO->getLastId())
             ->limit($bookIndexDTO->getLimit())
             ->get();
 
@@ -79,6 +61,15 @@ class BooksRepository
             }
         );
     }
+
+    //->orderBy('books.id', 'desc')
+    //->inRandomOrder('books.name')  // Time: 5564ms -При 1.5М
+    //->inRandomOrder('year')  //  5101ms  -При 1.5М
+    // ->orderBy('books.year') //Time: 41144ms (41 s 144 ms); // - є індекс
+    // ->orderBy('books.name') // Time: 43180ms   -При 1.5М  нема індексу, незначна різниці...хз..
+    // ->orderBy('name','asc') // 39248ms -При 1.5М
+    //->inRandomOrder('books.id') // 5154ms  -При 1.5М
+    // Щось незначний результат, не до кінці зрозуміло... Напевно неправильний тест.
 
 
     public function store(BookStoreDTO $bookStoreDTO): int

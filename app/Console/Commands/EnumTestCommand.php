@@ -45,7 +45,7 @@ class EnumTestCommand extends Command
         echo $value . PHP_EOL;
         echo $value . PHP_EOL;
 
-        $value = LangEnum::tryFrom(null);
+ //       $value = LangEnum::tryFrom(null);
 //        echo (" >" . $value . "<" . gettype($value)) . PHP_EOL;
 //
 //

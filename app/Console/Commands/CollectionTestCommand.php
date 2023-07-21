@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use App\Enum\LangEnum;
 use Illuminate\Console\Command;
 
-class CollectionTest extends Command
+class CollectionTestCommand extends Command
 {
 
     protected $signature = 'collecttest';

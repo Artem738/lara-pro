@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\DB;
 class BooksRepository
 {
 
-    public function chunkTestUpdateBookNames(): void
-    {
-            // Переїзжаємо у консольні команди для цього
-        echo ("404 - under construction"); die();
-    }
-
     public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection //of iterators
     {
         // echo($bookIndexDTO->getLastId()); die();
@@ -71,7 +65,11 @@ class BooksRepository
     //->inRandomOrder('books.id') // 5154ms  -При 1.5М
     // Щось незначний результат, не до кінці зрозуміло... Напевно неправильний тест.
 
-
+    public function chunkTestUpdateBookNames(): void
+    {
+        // Переїзжаємо у консольні команди для цього
+        echo ("404 - under construction"); die();
+    }
     public function store(BookStoreDTO $bookStoreDTO): int
     {
         $bookId = DB::table('books')->insertGetId(

@@ -4,7 +4,6 @@ namespace App\Enum;
 
 namespace App\Console\Commands;
 
-use App\Enum\LangEnum;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 

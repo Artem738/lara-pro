@@ -50,6 +50,7 @@ class EnumTestCommand extends Command
 //
 //
 //        $language =  LangEnum::tryFrom('ru')->value ?? null;
+
 //
 //        echo (">>>" . (LangEnum::tryFrom(null)) . "<" . gettype(LangEnum::tryFrom(null))) . PHP_EOL;
 //        //LangEnum::from($validatedData['lang']);

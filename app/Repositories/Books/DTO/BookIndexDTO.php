@@ -8,14 +8,26 @@ use Carbon\Carbon;
 
 class BookIndexDTO
 {
+    protected int $startId;
+
     public function __construct(
-        protected Carbon $startDate,
-        protected Carbon $endDate,
-        protected ?int    $year,
+        protected Carbon    $startDate,
+        protected Carbon    $endDate,
+        protected ?int      $year,
         protected ?LangEnum $lang,
-        protected int $lastId,
-        protected int $limit,
+        protected int       $lastId,
+        protected int       $limit,
+
     ) {
+        $this->startId = $this->lastId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStartId(): int
+    {
+        return $this->startId;
     }
 
     /**
@@ -32,7 +44,7 @@ class BookIndexDTO
     public function getLimit(): int
     {
         if (!in_array($this->limit, array_column(LimitEnum::cases(), 'value'))) {
-            return  10; // LimitEnum::LIMIT_10;
+            return 10; // LimitEnum::LIMIT_10;
         }
         return $this->limit;
     }

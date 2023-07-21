@@ -1,5 +1,5 @@
 ### GET request with environment variables
-GET http://lara-pro.loc/api/books/?startDate=2000-06-15&endDate=2020-07-16&lang=de&year=2000&limit=100&lastId=400000
+GET http://lara-pro.loc/api/books/?startDate=2020-07-15&endDate=2020-07-16&lang=en&limit=1000
 Accept: application/json
 
 
@@ -10,7 +10,7 @@ Accept: application/json
 #GET http://lara-pro.loc/api/books/?startDate=1999-07-15&endDate=2020-07-20&year=2000&lang=ua
 #GET http://lara-pro.loc/api/books/?startDate=2001-07-15&endDate=2020-07-20&year=2000&lang=de
 #GET http://lara-pro.loc/api/books/?startDate=2001-07-15&endDate=2020-07-20&year=2023&lang=de
-#
+#GET http://lara-pro.loc/api/books/?startDate=2000-06-15&endDate=2020-07-16&lang=de&year=2000&limit=100&lastId=1000
 #
 #            $validatedData['lastId'],
 #            $validatedData['limit']

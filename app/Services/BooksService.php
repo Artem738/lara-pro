@@ -16,6 +16,14 @@ class BooksService
     ) {
     }
 
+    public function chunkTest(): void
+    {
+        $this->booksRepository->chunkTestUpdateBookNames();
+
+        //return $book;
+
+    }
+
     public function getBooksForIndex(BookIndexDTO $bookIndexDTO): Collection
     {
         $book = $this->booksRepository->getBooksBetweenCreatedAtAndWhereLangAndYear($bookIndexDTO);

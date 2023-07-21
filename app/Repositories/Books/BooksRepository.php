@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class BooksRepository
 {
+
+    public function chunkTestUpdateBookNames(): void
+    {
+            // Переїзжаємо у консольні команди для цього
+        echo ("404 - under construction"); die();
+    }
+
     public function getBooksBetweenCreatedAtAndWhereLangAndYear(BookIndexDTO $bookIndexDTO): Collection //of iterators
     {
         // echo($bookIndexDTO->getLastId()); die();

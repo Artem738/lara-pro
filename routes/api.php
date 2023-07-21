@@ -5,11 +5,15 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BooksController;
 
 
+Route::get('books/chunk-test', [BooksController::class, 'chunkTest']);
+
 Route::apiResource('books', BooksController::class)->parameters(
     [
         'books' => 'id',
     ]
 );
+
+
 
 Route::apiResource('categories', CategoriesController::class)->parameters(
     [

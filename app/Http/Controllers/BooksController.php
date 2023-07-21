@@ -23,6 +23,13 @@ class BooksController extends Controller
     ) {
     }
 
+
+    public function chunkTest()
+    {
+        $this->booksService->chunkTest();
+        return response("chunkTestUpdateBookNames done", 200);
+    }
+
     /* INDEX DONE */
     public function index(BookIndexRequest $request)
     {

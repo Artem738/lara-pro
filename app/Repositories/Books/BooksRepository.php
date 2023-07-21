@@ -56,12 +56,13 @@ class BooksRepository
             //->orderBy('books.id', 'desc')
             //->inRandomOrder('books.name')  // Time: 5564ms -При 1.5М
             //->inRandomOrder('year')  //  5101ms  -При 1.5М
-           // ->orderBy('books.year') //Time: 41144ms (41 s 144 ms);
-           // ->orderBy('books.name') // Time: 43180ms   -При 1.5М  нема різниці... майже...
+           // ->orderBy('books.year') //Time: 41144ms (41 s 144 ms); // - є індекс
+           // ->orderBy('books.name') // Time: 43180ms   -При 1.5М  нема індексу, незначна різниці...хз..
+            // ->orderBy('name','asc') // 39248ms -При 1.5М
             //->inRandomOrder('books.id') // 5154ms  -При 1.5М
-            // у результаты
+            // Щось незначний результат, не до кінці зрозуміло... Напевно неправильний тест.
 
-            ->orderBy('name','asc')
+
             ->limit($bookIndexDTO->getLimit())
             ->get();
 

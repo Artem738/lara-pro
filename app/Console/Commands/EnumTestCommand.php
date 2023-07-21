@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Enum;
+
 namespace App\Console\Commands;
 
 use App\Enum\LangEnum;
@@ -20,22 +21,41 @@ class EnumTestCommand extends Command
         echo "good" . PHP_EOL;
 
         $values = array_column(LangEnum::cases(), 'value');
-       print_r($values).PHP_EOL;
+        print_r($values) . PHP_EOL;
 
-       //echo LangEnum::DE->getValue();
-        //echo LangEnum::DE;
-
-        //LangEnum::from($validatedData['lang']);
-
-        // dd(LangEnum::cases().'name'). PHP_EOL;
-        $total = 100;
-        $this->output->progressStart($total);
-
-        for ($i = 1; $i <= $total; $i++) {
-            usleep(1000); //10 ms  // 1s = 1000000
-            $this->output->progressAdvance();
+        echo LangEnum::DE->value . PHP_EOL;
+        echo LangEnum::class . PHP_EOL;
+        if (enum_exists(LangEnum::class)) {
+            $langClass = LangEnum::DE;
+            $langValue = $langClass->value;
+            $langName = $langClass->name;
+            echo($langName . ' is ' . $langValue . PHP_EOL);
         }
+        print_r(LangEnum::from('de')) . PHP_EOL;
+        echo (LangEnum::from('de')->name) . PHP_EOL;
+        echo (LangEnum::from('de')->value) . PHP_EOL;
+        $l = LangEnum::from('de');
+        echo (gettype($l)) . PHP_EOL;
+        print_r(array_column(LangEnum::cases(), 'value'));
 
-        $this->output->progressFinish();
+        $value = LangEnum::tryFrom('de')->value ?? 'IS NULL';
+        echo $value . PHP_EOL;
+
+        $value = LangEnum::tryFrom('ru')->value ?? 'IS NULL';
+        echo $value . PHP_EOL;
+        echo $value . PHP_EOL;
+
+        $value = LangEnum::tryFrom(null);
+//        echo (" >" . $value . "<" . gettype($value)) . PHP_EOL;
+//
+//
+//        $language =  LangEnum::tryFrom('ru')->value ?? null;
+//
+//        echo (">>>" . (LangEnum::tryFrom(null)) . "<" . gettype(LangEnum::tryFrom(null))) . PHP_EOL;
+//        //LangEnum::from($validatedData['lang']);
+//
+//        // dd(LangEnum::cases().'name'). PHP_EOL;
+//        echo(LangEnum::tryFrom(null)); //а так працює
+
     }
 }

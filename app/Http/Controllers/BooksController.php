@@ -36,16 +36,11 @@ class BooksController extends Controller
 
         $validatedData = $request->validated();
 
-        $languageFromEnum = null;
-        if (isset ($validatedData['lang'])) {
-            $languageFromEnum = LangEnum::from($validatedData['lang']);
-        }
-
         $bookIndexDTO = new BookIndexDTO(
             new Carbon($validatedData['startDate']),
             new Carbon($validatedData['endDate']),
             $validatedData['year'] ?? null,
-            $languageFromEnum,
+            LangEnum::tryFrom($validatedData['lang'] ?? null),// Довго розбирався, запрацювало...
             $validatedData['lastId'] ?? 0,
             $validatedData['limit'] ?? 20
         );
@@ -54,18 +49,13 @@ class BooksController extends Controller
 
         $resource = BookResource::collection($books);
 
-        // Ну от як це у services переносити?
-        $lastId = 0;
-        if (!$books->isEmpty()) {
-            $lastId = $books->last()->getId();
-        }
-
+        $metaLastId = $books->isNotEmpty() ? $books->last()->getId() : 0; // Тернарочка )
         return response()->json(
             [
                 'data' => $resource,
                 'meta' => [
                     'startId' => $bookIndexDTO->getStartId(),
-                    'lastId' => $lastId,
+                    'lastId' => $metaLastId,
                     'limit' => $bookIndexDTO->getLimit(),
                     'totalCount' => $books->count(),
                 ],

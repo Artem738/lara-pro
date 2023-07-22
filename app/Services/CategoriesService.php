@@ -2,10 +2,6 @@
 //namespace App\DTO;
 namespace App\Services;
 
-use App\Repositories\Books\BooksRepository;
-use App\Repositories\Books\DTO\BookIndexDTO;
-use App\Repositories\Books\DTO\BookStoreDTO;
-use App\Repositories\Books\Iterators\BookIterator;
 use App\Repositories\Categories\CategoriesRepository;
 use App\Repositories\Categories\DTO\CategoryStoreDTO;
 use App\Repositories\Categories\Iterators\CategoryIterator;

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\UserCheckIdRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
     public function __construct(
-        protected UserService $userLoginService
+        protected UserService $usersService
     ) {
     }
 
@@ -31,7 +33,7 @@ class UserController extends Controller
         //  Підключаємо сервіс та ресурс.
 
         $userResource = new UserResource(
-            $this->userLoginService->getById(
+            $this->usersService->getUserById(
                 auth()
                     ->user()->id  //  SOME ERROR ???
             )
@@ -42,6 +44,64 @@ class UserController extends Controller
                 'bearer' => $token,
             ]
         );
+    }
+    public function index()
+    {
+        $data = $this->usersService->getAllUsers();
+        return response(UserResource::collection($data), 200);
+    }
 
+    public function store(UserStoreRequest $request)
+    {
+        $valid = $request->validated();
+        $userDTO = new UserStoreDTO(
+            $valid['name'],
+            $valid['email'],
+            $valid['password'],
+            Carbon::now(),
+            Carbon::now()
+        );
+
+        $userIterator = $this->usersService->store($userDTO);
+        $userResource = new UserResource($userIterator);
+        return response($userResource, 201); // 201 - Created
+    }
+
+    public function show(UserCheckIdRequest $request)
+    {
+        $valid = $request->validated();
+        $userIterator = $this->usersService->getUserById($valid['id']);
+        $userResource = new UserResource($userIterator);
+        return response($userResource, 200);
+    }
+
+    public function update(UserUpdateRequest $request)
+    {
+        $valid = $request->validated();
+        $userData = $this->usersService->getUserById($valid['id']);
+        $userUpdateDTO = new UserUpdateDTO(
+            $valid['id'],
+            $valid['name'],
+            $valid['email'],
+            // Add other properties here as needed
+            $userData->getCreatedAt(),
+            Carbon::now()
+        );
+
+        $userIterator = $this->usersService->updateUser($userUpdateDTO);
+        return response(new UserResource($userIterator), 200);
+    }
+
+    public function destroy(UserCheckIdRequest $request)
+    {
+        $valid = $request->validated();
+        if ($this->usersService->deleteUser($valid['id'])) {
+            return response()->json(['message' => 'User id - ' . $valid['id'] . ' deleted successfully']);
+        }
+
+        return response()->json(
+            ['message' => 'User id - ' . $valid['id'] . ' delete failure or no user.'],
+            422 // 422 - Unprocessable Entity
+        );
     }
 }

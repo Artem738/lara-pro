@@ -2,7 +2,7 @@
 
 namespace App\Repositories\User\Iterators;
 
-class UserLoginIterator
+class UserIterator
 {
     protected int $id;
     protected string $email;

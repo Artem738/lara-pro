@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Repositories\User\Iterators\UserLoginIterator;
+use App\Repositories\User\Iterators\UserIterator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,7 +15,7 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var UserLoginIterator $user */
+        /** @var UserIterator $user */
         $user = $this->resource;
 
         return [

@@ -6,15 +6,30 @@ use App\Http\Controllers\BooksController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::post('login', [UserController::class, 'login']);
+
 Route::middleware(["auth:api"])->group(
     function () {
         //Всі роути тут потребують авторизованого користувача, перевіряє ключ bearer у тоукені
         Route::get('books/chunk-test', [BooksController::class, 'chunkTest']);
+
+        Route::apiResource('user', UserController::class)->parameters(
+            [
+                'user' => 'id',
+            ]
+
+        );
     }
 );
 // але можно просто додати до роута ->middleware('auth');
 
-Route::post('login', [UserController::class, 'login']);
+
+Route::apiResource('books', BooksController::class)->parameters(
+    [
+        'books' => 'id',
+    ]
+);
+
 
 Route::apiResource('books', BooksController::class)->parameters(
     [

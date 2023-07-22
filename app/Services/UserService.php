@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repositories\User\Iterators\UserLoginIterator;
 use App\Repositories\User\UserRepository;
 
-class UserLoginService
+class UserService
 {
     public function __construct(
         protected UserRepository $userRepository,

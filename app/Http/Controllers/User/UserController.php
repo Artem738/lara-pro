@@ -5,12 +5,12 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Resources\UserResource;
-use App\Services\UserLoginService;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
     public function __construct(
-        protected UserLoginService $userLoginService
+        protected UserService $userLoginService
     ) {
     }
 

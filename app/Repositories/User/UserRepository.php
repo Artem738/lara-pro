@@ -2,6 +2,7 @@
 
 namespace App\Repositories\User;
 
+use App\Repositories\User\DTO\UserStoreDTO;
 use App\Repositories\User\Iterators\UserIterator;
 use Illuminate\Support\Facades\DB;
 
@@ -51,7 +52,7 @@ class UserRepository
             [
                 'name' => $userStoreDTO->getName(),
                 'email' => $userStoreDTO->getEmail(),
-                // Add other properties here as needed
+                'password' => $userStoreDTO->getPassword(),
                 'created_at' => $userStoreDTO->getCreatedAt(),
                 'updated_at' => $userStoreDTO->getUpdatedAt(),
             ]

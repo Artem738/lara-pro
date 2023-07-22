@@ -5,9 +5,12 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserCheckIdRequest;
 use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Resources\UserResource;
+use App\Repositories\User\DTO\UserStoreDTO;
 use App\Services\UserService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -57,7 +60,7 @@ class UserController extends Controller
         $userDTO = new UserStoreDTO(
             $valid['name'],
             $valid['email'],
-            $valid['password'],
+            Hash::make($valid['password']),
             Carbon::now(),
             Carbon::now()
         );

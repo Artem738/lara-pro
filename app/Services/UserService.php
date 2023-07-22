@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\User\DTO\UserStoreDTO;
 use App\Repositories\User\Iterators\UserIterator;
 use App\Repositories\User\UserRepository;
 use Illuminate\Support\Collection;
@@ -20,28 +21,28 @@ class UserService
 
     public function getAllUsers(): Collection
     {
-        return $this->usersRepository->getAllUsers();
+        return $this->userRepository->getAllUsers();
     }
 
     public function store(UserStoreDTO $userDTO): UserIterator
     {
-        $userId = $this->usersRepository->store($userDTO);
-        return $this->usersRepository->getUserById($userId);
+        $userId = $this->userRepository->store($userDTO);
+        return $this->userRepository->getUserById($userId);
     }
 
 
     public function updateUser($userUpdateDTO): UserIterator
     {
-        $isUpdated = $this->usersRepository->updateUser($userUpdateDTO);
+        $isUpdated = $this->userRepository->updateUser($userUpdateDTO);
         if ($isUpdated == null) {
             throw new Exception('Failed to update user.');
         }
-        return $this->usersRepository->getUserById($userUpdateDTO->getId());
+        return $this->userRepository->getUserById($userUpdateDTO->getId());
     }
 
     public function deleteUser($id): bool
     {
-        return $this->usersRepository->deleteUser($id);
+        return $this->userRepository->deleteUser($id);
     }
 
 }

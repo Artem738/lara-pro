@@ -1,6 +1,6 @@
 ### Send POST request with json body
 
-POST http://php-pro.loc/api/login
+POST http://lara-pro.loc/api/login
 Content-Type: application/json
 Accept: application/json
 

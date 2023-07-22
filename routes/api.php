@@ -1,11 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\BooksController;
+use Illuminate\Support\Facades\Route;
 
 
-Route::get('books/chunk-test', [BooksController::class, 'chunkTest']);
+Route::middleware(["auth:api"])->group(
+    function () {
+        //Всі роути тут потребують авторизованого користувача, перевіряє ключ bearer у тоукені
+        Route::get('books/chunk-test', [BooksController::class, 'chunkTest']);
+    }
+);
+// але можно просто додати до роута ->middleware('auth');
+
+Route::post('login', [UserController::class, 'login']);
 
 Route::apiResource('books', BooksController::class)->parameters(
     [
@@ -14,12 +23,13 @@ Route::apiResource('books', BooksController::class)->parameters(
 );
 
 
-
 Route::apiResource('categories', CategoriesController::class)->parameters(
     [
         'categories' => 'id',
     ]
 );
+
+
 
 //Route::get('/books', [BooksController::class, 'index']); // http://lara-pro.loc/api/books/
 //Route::post('/books', [BooksController::class, 'store']);  // curl -X POST -d "name=Book Name&author=Author Name1&year=2022&countPages=2001" http://lara-pro.loc/api/books

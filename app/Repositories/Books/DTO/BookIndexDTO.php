@@ -44,7 +44,7 @@ class BookIndexDTO
     public function getLimit(): int
     {
         if (!in_array($this->limit, array_column(LimitEnum::cases(), 'value'))) {
-            return 10; // LimitEnum::LIMIT_10;
+            return LimitEnum::LIMIT_10->value; //Поки так.
         }
         return $this->limit;
     }

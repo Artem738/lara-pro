@@ -46,7 +46,7 @@ class BooksRepository
                 }
             )
             ->where('books.id', '>', $bookIndexDTO->getLastId())
-            ->limit($bookIndexDTO->getLimit())
+            ->limit($bookIndexDTO->getLimit()->value)
             ->get();
 
         return $booksData->map(

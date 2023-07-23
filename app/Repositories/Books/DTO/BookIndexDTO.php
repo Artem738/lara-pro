@@ -11,12 +11,12 @@ class BookIndexDTO
     protected int $startId;
 
     public function __construct(
-        protected Carbon    $startDate,
-        protected Carbon    $endDate,
-        protected ?int      $year,
-        protected ?LangEnum $lang,
-        protected int       $lastId,
-        protected int       $limit,
+        protected Carbon     $startDate,
+        protected Carbon     $endDate,
+        protected ?int       $year,
+        protected ?LangEnum  $lang,
+        protected int        $lastId,
+        protected LimitEnum $limit,
 
     ) {
         $this->startId = $this->lastId;
@@ -41,11 +41,8 @@ class BookIndexDTO
     /**
      * @return int
      */
-    public function getLimit(): int
+    public function getLimit(): LimitEnum
     {
-        if (!in_array($this->limit, array_column(LimitEnum::cases(), 'value'))) {
-            return LimitEnum::LIMIT_10->value; //Поки так.
-        }
         return $this->limit;
     }
 

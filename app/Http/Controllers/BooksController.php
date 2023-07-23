@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\LangEnum;
+use App\Enum\LimitEnum;
 use App\Http\Requests\Book\BookDestroyRequest;
 use App\Http\Requests\Book\BookIndexRequest;
 use App\Http\Requests\Book\BookShowRequest;
@@ -42,8 +43,9 @@ class BooksController extends Controller
             $validatedData['year'] ?? null,
             LangEnum::tryFrom($validatedData['lang'] ?? null),// Довго розбирався, запрацювало...
             $validatedData['lastId'] ?? 0,
-            $validatedData['limit'] ?? 20
+            LimitEnum::tryFrom($validatedData['limit'] ?? LimitEnum::LIMIT_20->value),
         );
+
 
         $books = $this->booksService->getBooksForIndex($bookIndexDTO);
 
@@ -56,7 +58,7 @@ class BooksController extends Controller
                 'meta' => [
                     'startId' => $bookIndexDTO->getStartId(),
                     'lastId' => $metaLastId,
-                    'limit' => $bookIndexDTO->getLimit(),
+                    'limit' => $bookIndexDTO->getLimit()->value,
                     'totalCount' => $books->count(),
                 ],
             ], 200

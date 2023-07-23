@@ -39,20 +39,21 @@ class UserController extends Controller
     {
 
         //$data = $this->userService->getAllUsers();
-        $myData = auth()->user()->id.PHP_EOL;
-        $myData .= auth()->user()->name.PHP_EOL;
-        $myData .= auth()->user()->getAuthPassword() .PHP_EOL;
-        $myData .= auth()->user()->getAuthIdentifierName().PHP_EOL;
-        $myData .= auth()->user()->getAuthIdentifier().PHP_EOL;
+        $myData = auth()->user()->id . PHP_EOL;
+        $myData .= auth()->user()->name . PHP_EOL;
+        $myData .= auth()->user()->getAuthPassword() . PHP_EOL;
+        $myData .= auth()->user()->getAuthIdentifierName() . PHP_EOL;
+        $myData .= auth()->user()->getAuthIdentifier() . PHP_EOL;
 
-       // $myData .= auth()->user()->setRememberToken().PHP_EOL; // Цо це?
-       // $myData .= auth()->user()->getRememberToken().PHP_EOL;
+        // $myData .= auth()->user()->setRememberToken().PHP_EOL; // Цо це?
+        // $myData .= auth()->user()->getRememberToken().PHP_EOL;
 
-        $myData .= "=============" .PHP_EOL;
+        $myData .= "=============" . PHP_EOL;
 
-        $myData .= auth()->id() .PHP_EOL;
-       // $myData .= auth()-> .PHP_EOL;
-
+        $myData .= auth()->id() . PHP_EOL;
+        // $myData .= auth()-> .PHP_EOL;
+        $allUsers = $this->userService->getAllUsers();
+        var_dump($allUsers);
 
         return response($myData, 200);
     }

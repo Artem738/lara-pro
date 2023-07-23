@@ -6,16 +6,22 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge(
+            [
+                'id' => $this->route('id'),
+            ]
+        );
+    }
     public function rules()
     {
 
         return [
+            'id' => ['required', 'integer', 'numeric', Rule::exists('users', 'id')],
             'name' => ['required','string','min:3', 'max:255', Rule::unique('users')],
-            'email' => ['required','email:rfc,dns','string','min:4', 'max:255', Rule::unique('users')],
-            'password' => ['required','string'],
-            //'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('books')],
         ];
     }
 

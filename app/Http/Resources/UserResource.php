@@ -20,7 +20,9 @@ class UserResource extends JsonResource
 
         return [
             'id' => $user->getId(),
+            'name' => $user->getName(),
             'email' => $user->getEmail(),
+            'token' => $user->getToken(),
         ];
     }
 }

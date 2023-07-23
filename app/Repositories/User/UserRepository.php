@@ -3,7 +3,10 @@
 namespace App\Repositories\User;
 
 use App\Repositories\User\DTO\UserStoreDTO;
+use App\Repositories\User\DTO\UserUpdateDTO;
 use App\Repositories\User\Iterators\UserIterator;
+
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository
@@ -18,7 +21,6 @@ class UserRepository
                     'id',
                     'name',
                     'email',
-                    // Add other properties here as needed
                     'created_at',
                     'updated_at',
                 ]
@@ -65,16 +67,12 @@ class UserRepository
     {
         $updateStatus = DB::table('users')
             ->where('id', $userUpdateDTO->getId())
-            ->update(
-                [
-                    'name' => $userUpdateDTO->getName(),
-                    'email' => $userUpdateDTO->getEmail(),
-                    // Add other properties here as needed
-                    'updated_at' => $userUpdateDTO->getUpdatedAt(),
-                ]
-            );
+            ->update([
+                         'name' => $userUpdateDTO->getName(),
+                         'updated_at' => $userUpdateDTO->getUpdatedAt(),
+                     ]);
 
-        return $updateStatus;
+        return $updateStatus > 0;
     }
 
     public function deleteUser($id): bool

@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Repositories\User\DTO\UserStoreDTO;
+use App\Repositories\User\DTO\UserUpdateDTO;
 use App\Repositories\User\Iterators\UserIterator;
 use App\Repositories\User\UserRepository;
+use Exception;
 use Illuminate\Support\Collection;
 
 class UserService
@@ -14,7 +16,28 @@ class UserService
     ) {
     }
 
-    public function getUserById(int $id):UserIterator {
+    public function createToken()
+    {
+        return auth()
+            ->user()
+            ->createToken(config('app.name')); //Якесь секретне слово, а навіщо?
+    }
+
+    public function loginUser(array $data): UserIterator
+    {
+
+
+
+        $user = $this->getUserById(auth()->user()->id);
+        $token = $this->createToken();
+
+        // Устанавливаем токен для объекта итератора пользователя
+        $user->setToken($token);
+        return $user;
+    }
+
+    public function getUserById(int $id): UserIterator
+    {
         return $this->userRepository->getUserById($id);
 
     }
@@ -31,7 +54,7 @@ class UserService
     }
 
 
-    public function updateUser($userUpdateDTO): UserIterator
+    public function updateUser(UserUpdateDTO $userUpdateDTO): UserIterator
     {
         $isUpdated = $this->userRepository->updateUser($userUpdateDTO);
         if ($isUpdated == null) {

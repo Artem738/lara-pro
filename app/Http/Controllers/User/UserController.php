@@ -37,8 +37,24 @@ class UserController extends Controller
 
     public function index()
     {
-        $data = $this->userService->getAllUsers();
-        return response(UserResource::collection($data), 200);
+
+        //$data = $this->userService->getAllUsers();
+        $myData = auth()->user()->id.PHP_EOL;
+        $myData .= auth()->user()->name.PHP_EOL;
+        $myData .= auth()->user()->getAuthPassword() .PHP_EOL;
+        $myData .= auth()->user()->getAuthIdentifierName().PHP_EOL;
+        $myData .= auth()->user()->getAuthIdentifier().PHP_EOL;
+
+       // $myData .= auth()->user()->setRememberToken().PHP_EOL; // Цо це?
+       // $myData .= auth()->user()->getRememberToken().PHP_EOL;
+
+        $myData .= "=============" .PHP_EOL;
+
+        $myData .= auth()->id() .PHP_EOL;
+       // $myData .= auth()-> .PHP_EOL;
+
+
+        return response($myData, 200);
     }
 
     public function store(UserStoreRequest $request)
@@ -78,7 +94,6 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request)
     {
         $valid = $request->validated();
-        //$userData = $this->userService->getUserById($valid['id']);
         $userUpdateDTO = new UserUpdateDTO(
             $valid['id'],
             $valid['name'],

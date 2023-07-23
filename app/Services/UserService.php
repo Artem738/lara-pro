@@ -26,9 +26,7 @@ class UserService
     public function loginUser(array $data): UserIterator
     {
 
-
-
-        $user = $this->getUserById(auth()->user()->id);
+        $user = $this->getUserById(auth()->id());
         $token = $this->createToken();
 
         // Устанавливаем токен для объекта итератора пользователя
@@ -38,17 +36,26 @@ class UserService
 
     public function getUserById(int $id): UserIterator
     {
+
         return $this->userRepository->getUserById($id);
 
     }
 
     public function getAllUsers(): Collection
     {
+        if (auth()->id() != 1) {
+            echo("Only SuperAdmin can see all users");
+            die();
+        }
         return $this->userRepository->getAllUsers();
     }
 
     public function store(UserStoreDTO $userDTO): UserIterator
     {
+        if (auth()->id() != 1) {
+            echo("Only SuperAdmin can create any users");
+            die();
+        }
         $userId = $this->userRepository->store($userDTO);
         return $this->userRepository->getUserById($userId);
     }
@@ -56,15 +63,23 @@ class UserService
 
     public function updateUser(UserUpdateDTO $userUpdateDTO): UserIterator
     {
+        if (auth()->id() != $userUpdateDTO->getId() || auth()->id() != 1) {
+            echo("Only SuperAdmin can update any user");
+            die();
+        }
         $isUpdated = $this->userRepository->updateUser($userUpdateDTO);
         if ($isUpdated == null) {
-            throw new Exception('Failed to update user.');
+            throw new Exception('Failed to update user.'); // Як повертати помилки на контроллер?
         }
         return $this->userRepository->getUserById($userUpdateDTO->getId());
     }
 
     public function deleteUser($id): bool
     {
+        if (auth()->id() != 1) {
+            echo("Only SuperAdmin can delete users");
+            die();
+        }
         return $this->userRepository->deleteUser($id);
     }
 

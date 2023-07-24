@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    public static int $categoriesNumberToInsert = 100; // CATEGORIES  !!
-    public static int $booksBatchPacksToInsert = 20; //треба менше для тесту chunk
+    public static int $categoriesNumberToInsert = 50; // CATEGORIES  !!
+    public static int $booksBatchPacksToInsert = 100; //треба менше для тесту chunk
     public static int $booksBatchSize = 1000;
 
 //    public function __construct()

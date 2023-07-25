@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UserLoginRequest extends FormRequest
@@ -11,8 +12,8 @@ class UserLoginRequest extends FormRequest
     {
 
         return [
-            'email' => ['required'],
-            'password' => ['required'],
+            'email' => ['required','email:rfc,dns','string','min:4', 'max:255', Rule::exists('users')],
+            'password' => ['required','string','min:6', 'max:255'],
         ];
     }
 

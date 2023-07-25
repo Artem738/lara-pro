@@ -6,9 +6,9 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpI
 Content-Type: application/json
 
 {
-    "name": "user2211211",
-    "email": "user1112212@user.com",
-    "password": "123456"
+    "name": "aauser2211212132131",
+    "email": "aauser111321312212@user.com",
+    "password": "aa123456"
 }
 
 

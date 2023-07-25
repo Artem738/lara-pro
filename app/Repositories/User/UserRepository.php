@@ -5,7 +5,6 @@ namespace App\Repositories\User;
 use App\Repositories\User\DTO\UserStoreDTO;
 use App\Repositories\User\DTO\UserUpdateDTO;
 use App\Repositories\User\Iterators\UserIterator;
-
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -59,7 +58,7 @@ class UserRepository
                 'updated_at' => $userStoreDTO->getUpdatedAt(),
             ]
         );
-
+        // А що тут буде якщо не запишем? Треба повертати помилку...
         return $userId;
     }
 

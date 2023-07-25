@@ -8,6 +8,7 @@ use App\Repositories\User\Iterators\UserIterator;
 use App\Repositories\User\UserRepository;
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -16,57 +17,62 @@ class UserService
     ) {
     }
 
-    public function createToken()
+    public function getAuthUserId(): int
     {
-        return auth()
-            ->user()
-            ->createToken(config('app.name')); //Якесь секретне слово, а навіщо?
+       // return auth()->user()->id;
+        return auth()->id();
     }
 
-    public function loginUser(array $data): UserIterator
+    public function createToken()
     {
+        return auth()->user()->createToken(config('app.name'));
+    }
 
-        $user = $this->getUserById(auth()->id());
-        $token = $this->createToken();
+    public function loginAuthAttempt(array $data): bool
+    {
+        if (auth()->attempt($data) === false) {
+            return false;
+        }
+        return true;
+    }
 
-        // Устанавливаем токен для объекта итератора пользователя
-        $user->setToken($token);
-        return $user;
+    public function checkUserAuthDataWithoutLogin(array $data): bool
+    {
+        if (Auth::validate($data) === false) {  // Я правильно?  auth()->validate()  або так?
+            return false;
+        }
+        return true;
+    }
+
+    public function loginValidatedUser(array $data): UserIterator
+    {
+        if ($this->loginAuthAttempt($data) === false) {
+            die("Use loginValidatedUser only on validated User, after checkUserAuthDataWithoutLogin") . PHP_EOL;
+        }
+        return $this->getUserById($this->getAuthUserId());
     }
 
     public function getUserById(int $id): UserIterator
     {
-
         return $this->userRepository->getUserById($id);
-
     }
 
     public function getAllUsers(): Collection
     {
-        if (auth()->id() != 1) {
-            echo("Only SuperAdmin can see all users");
-            die();
-        }
+
         return $this->userRepository->getAllUsers();
     }
 
-    public function store(UserStoreDTO $userDTO): UserIterator
+    public function storeUser(UserStoreDTO $userDTO): UserIterator
     {
-        if (auth()->id() != 1) {
-            echo("Only SuperAdmin can create any users");
-            die();
-        }
+
         $userId = $this->userRepository->store($userDTO);
         return $this->userRepository->getUserById($userId);
     }
 
-
     public function updateUser(UserUpdateDTO $userUpdateDTO): UserIterator
     {
-        if (auth()->id() != $userUpdateDTO->getId() || auth()->id() != 1) {
-            echo("Only SuperAdmin can update any user");
-            die();
-        }
+
         $isUpdated = $this->userRepository->updateUser($userUpdateDTO);
         if ($isUpdated == null) {
             throw new Exception('Failed to update user.'); // Як повертати помилки на контроллер?
@@ -76,10 +82,6 @@ class UserService
 
     public function deleteUser($id): bool
     {
-        if (auth()->id() != 1) {
-            echo("Only SuperAdmin can delete users");
-            die();
-        }
         return $this->userRepository->deleteUser($id);
     }
 

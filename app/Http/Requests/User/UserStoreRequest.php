@@ -15,7 +15,6 @@ class UserStoreRequest extends FormRequest
             'name' => ['required','string','min:3', 'max:255', Rule::unique('users')],
             'email' => ['required','email:rfc,dns','string','min:4', 'max:255', Rule::unique('users')],
             'password' => ['required','string','min:6', 'max:255'],
-            //'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('books')],
         ];
     }
 

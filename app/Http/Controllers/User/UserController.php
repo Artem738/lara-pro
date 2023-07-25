@@ -7,15 +7,12 @@ use App\Http\Requests\User\UserCheckIdRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserStoreRequest;
 use App\Http\Requests\User\UserUpdateRequest;
-use App\Http\Resources\BookResource;
 use App\Http\Resources\UserResource;
 use App\Repositories\User\DTO\UserStoreDTO;
 use App\Repositories\User\DTO\UserUpdateDTO;
 use App\Services\UserService;
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Response;
+
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -25,34 +22,26 @@ class UserController extends Controller
         protected UserService $userService
     ) {
     }
-
     public function login(UserLoginRequest $request)
     {
         $data = $request->validated();
-
 
         if ($this->userService->checkUserAuthDataWithoutLogin($data) === false) {
             return response("Email or Password incorrect", 401); // 401 Unauthorized
         }
 
-
         $user = $this->userService->loginValidatedUser($data);
-        $token = $this->userService->createToken();
-
-        $userResource = new UserResource($user);
 
         return response()->json(
             [
-                'data' => $userResource,
-                'Bearer' => $token,
+                'data' => new UserResource($user),
+                'Bearer' => $this->userService->createToken(),
                 'meta' => [
                     'info' => $user->getName() . ", welcome to API. Save your key.",
                 ],
             ], 200
         );
-
     }
-
     public function index()
     {
         $allUsers = $this->userService->getAllUsers();
@@ -61,7 +50,7 @@ class UserController extends Controller
             [
                 'data' => UserResource::collection($allUsers),
                 'meta' => [
-                    'info' => "All users data...",
+                    'info' => "All users data shown...",
                 ],
             ], 200
         );
@@ -85,7 +74,7 @@ class UserController extends Controller
                 'data' => new UserResource($userIterator),
                 'Bearer' => $this->userService->createToken(),
                 'meta' => [
-                    'info' => $data['name'] . ", welcome to API. Save your key.",
+                    'info' => $data['name'] . ", - new user created. Token shown",
                 ],
             ], 201
         );
@@ -102,7 +91,7 @@ class UserController extends Controller
                 'data' => new UserResource($userIterator),
                 'Bearer' => $this->userService->createToken(),
                 'meta' => [
-                    'info' => $userIterator->getName() . ", exist in Database",
+                    'info' => $userIterator->getName() . ", just exist in Database",
                 ],
             ], 200
         );
@@ -118,13 +107,13 @@ class UserController extends Controller
         );
 
         $userIterator = $this->userService->updateUser($userUpdateDTO);
-        // return response(new UserResource($userIterator), 200);
+
         return response()->json(
             [
                 'data' => new UserResource($userIterator),
                 'Bearer' => $this->userService->createToken(),
                 'meta' => [
-                    'info' => $userIterator->getName() . ", update Successful",
+                    'info' => $userIterator->getName() . ", - User update Successful",
                 ],
             ], 202 // 202 Accepted — Прийнято
         );
@@ -135,7 +124,7 @@ class UserController extends Controller
         $data = $request->validated();
         if ($this->userService->deleteUser($data['id'])) {
             return response()->json(
-                ['message' => 'User id - ' . $data['id'] . ' deleted successfully'],
+                ['message' => 'User id - ' . $data['id'] . ' User deleted successfully'],
                 204 //204 No Content — Немає вмісту , І тому реально message не повертає )))
             );
         }

@@ -125,7 +125,7 @@ class UserController extends Controller
         if ($this->userService->deleteUser($data['id'])) {
             return response()->json(
                 ['message' => 'User id - ' . $data['id'] . ' User deleted successfully'],
-                204 //204 No Content — Немає вмісту , І тому реально message не повертає )))
+                200 //204 No Content — Немає вмісту , І тому реально message не повертає )))
             );
         }
         return response()->json(

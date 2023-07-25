@@ -43,13 +43,12 @@ class UserRepository
             $userIterator = new UserIterator($userData);
             $users->push($userIterator);
         }
-
         return $users;
     }
 
     public function store(UserStoreDTO $data): int
     {
-        $userId = DB::table('users')->insertGetId(
+        return DB::table('users')->insertGetId(
             [
                 'name' => $data->getName(),
                 'email' => $data->getEmail(),
@@ -58,8 +57,6 @@ class UserRepository
                 'updated_at' => $data->getUpdatedAt(),
             ]
         );
-        // А що тут буде якщо не запишем? Треба повертати помилку...
-        return $userId;
     }
 
     public function updateUser(UserUpdateDTO $data): bool

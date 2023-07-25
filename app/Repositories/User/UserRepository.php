@@ -13,7 +13,7 @@ class UserRepository
 
     public function getUserById(int $id): UserIterator
     {
-        $userData = DB::table('users')
+        $data = DB::table('users')
             ->where('id', $id)
             ->select(
                 [
@@ -27,19 +27,19 @@ class UserRepository
             ->get()
             ->first();
 
-        return new UserIterator($userData);
+        return new UserIterator($data);
     }
 
 
     public function getAllUsers(): Collection
     {
-        $usersData = DB::table('users')
+        $data = DB::table('users')
             ->limit(1000)
             ->get();
 
         $users = collect();
 
-        foreach ($usersData as $userData) {
+        foreach ($data as $userData) {
             $userIterator = new UserIterator($userData);
             $users->push($userIterator);
         }
@@ -47,28 +47,28 @@ class UserRepository
         return $users;
     }
 
-    public function store(UserStoreDTO $userStoreDTO): int
+    public function store(UserStoreDTO $data): int
     {
         $userId = DB::table('users')->insertGetId(
             [
-                'name' => $userStoreDTO->getName(),
-                'email' => $userStoreDTO->getEmail(),
-                'password' => $userStoreDTO->getPassword(),
-                'created_at' => $userStoreDTO->getCreatedAt(),
-                'updated_at' => $userStoreDTO->getUpdatedAt(),
+                'name' => $data->getName(),
+                'email' => $data->getEmail(),
+                'password' => $data->getPassword(),
+                'created_at' => $data->getCreatedAt(),
+                'updated_at' => $data->getUpdatedAt(),
             ]
         );
         // А що тут буде якщо не запишем? Треба повертати помилку...
         return $userId;
     }
 
-    public function updateUser(UserUpdateDTO $userUpdateDTO): bool
+    public function updateUser(UserUpdateDTO $data): bool
     {
         $updateStatus = DB::table('users')
-            ->where('id', $userUpdateDTO->getId())
+            ->where('id', $data->getId())
             ->update([
-                         'name' => $userUpdateDTO->getName(),
-                         'updated_at' => $userUpdateDTO->getUpdatedAt(),
+                         'name' => $data->getName(),
+                         'updated_at' => $data->getUpdatedAt(),
                      ]);
 
         return $updateStatus > 0;

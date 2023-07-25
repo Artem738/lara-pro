@@ -63,21 +63,21 @@ class UserService
         return $this->userRepository->getAllUsers();
     }
 
-    public function storeUser(UserStoreDTO $userDTO): UserIterator
+    public function storeUser(UserStoreDTO $data): UserIterator
     {
 
-        $userId = $this->userRepository->store($userDTO);
+        $userId = $this->userRepository->store($data);
         return $this->userRepository->getUserById($userId);
     }
 
-    public function updateUser(UserUpdateDTO $userUpdateDTO): UserIterator
+    public function updateUser(UserUpdateDTO $data): UserIterator
     {
 
-        $isUpdated = $this->userRepository->updateUser($userUpdateDTO);
+        $isUpdated = $this->userRepository->updateUser($data);
         if ($isUpdated == null) {
             throw new Exception('Failed to update user.'); // Як повертати помилки на контроллер?
         }
-        return $this->userRepository->getUserById($userUpdateDTO->getId());
+        return $this->userRepository->getUserById($data->getId());
     }
 
     public function deleteUser($id): bool

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // https://uk.wikipedia.org/wiki/Список_кодів_стану_HTTP
+    //   https://uk.wikipedia.org/wiki/Список_кодів_стану_HTTP
     public function __construct(
         protected UserService $userService
     ) {

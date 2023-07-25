@@ -6,7 +6,6 @@ use App\Repositories\User\DTO\UserStoreDTO;
 use App\Repositories\User\DTO\UserUpdateDTO;
 use App\Repositories\User\Iterators\UserIterator;
 use App\Repositories\User\UserRepository;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use JetBrains\PhpStorm\NoReturn;
@@ -20,8 +19,7 @@ class UserService
 
     public function getAuthUserId(): int
     {
-        // return auth()->user()->id;
-        return auth()->id();
+        return auth()->id();  // return auth()->user()->id;
     }
 
     public function createToken()
@@ -48,7 +46,7 @@ class UserService
     public function loginValidatedUser(array $data): UserIterator
     {
         if ($this->loginAuthAttempt($data) === false) {
-            $this->serviceError("Use loginValidatedUser only on validated User, after checkUserAuthDataWithoutLogin") . PHP_EOL;
+            $this->serviceError("Use loginValidatedUser only on validated User, after checkUserAuthDataWithoutLogin", 401);
         }
         return $this->getUserById($this->getAuthUserId());
     }
@@ -60,14 +58,13 @@ class UserService
 
     public function getAllUsers(): Collection
     {
-
         return $this->userRepository->getAllUsers();
     }
 
     public function storeUser(UserStoreDTO $data): UserIterator
     {
         $userId = $this->userRepository->store($data);
-        if($userId == null || $userId  == 0) {
+        if ($userId == null || $userId == 0) {
             $this->serviceError('Failed to store a new user data.');
         }
         return $this->userRepository->getUserById($userId);
@@ -75,7 +72,6 @@ class UserService
 
     public function updateUser(UserUpdateDTO $data): UserIterator
     {
-
         $isUpdated = $this->userRepository->updateUser($data);
         if ($isUpdated == null) {
             $this->serviceError('Failed to update a user.');
@@ -94,7 +90,7 @@ class UserService
         response()->json(
             [
                 'error' => $errorMessage,
-            ], $errorCode // 202 Accepted — Прийнято
+            ], $errorCode
         )
         );
     }

@@ -12,7 +12,6 @@ use App\Repositories\User\DTO\UserStoreDTO;
 use App\Repositories\User\DTO\UserUpdateDTO;
 use App\Services\UserService;
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -29,7 +28,6 @@ class UserController extends Controller
         if ($this->userService->checkUserAuthDataWithoutLogin($data) === false) {
             return response("Email or Password incorrect", 401); // 401 Unauthorized
         }
-
         $user = $this->userService->loginValidatedUser($data);
 
         return response()->json(
@@ -66,7 +64,6 @@ class UserController extends Controller
             Carbon::now(),
             Carbon::now()
         );
-
         $userIterator = $this->userService->storeUser($userDTO);
 
         return response()->json(
@@ -105,7 +102,6 @@ class UserController extends Controller
             $data['name'],
             Carbon::now(),
         );
-
         $userIterator = $this->userService->updateUser($userUpdateDTO);
 
         return response()->json(

@@ -12,6 +12,7 @@ use JetBrains\PhpStorm\NoReturn;
 
 class UserService
 {
+    // TODO: Зробити ролі через ENUM і роздати права якось тут?
     public function __construct(
         protected UserRepository $userRepository,
     ) {
